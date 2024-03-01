@@ -9,7 +9,7 @@ public class Laureate {
     private String genres;
     private String citation;
 
-    public Laureate(String name, String birth_death, String nations, String languages) {
+    public Laureate(String name, String birth_death, String nations, String languages, String genres, String citation) {
         this.name = name;
         this.birth_death = birth_death;
         this.nations = nations;
