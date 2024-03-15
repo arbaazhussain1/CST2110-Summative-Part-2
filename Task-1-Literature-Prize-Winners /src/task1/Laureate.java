@@ -1,15 +1,17 @@
 package task1;
 
+import java.util.List;
+
 public class Laureate {
 
     private String name;
     private String birth_death;
-    private String nations;
-    private String languages;
-    private String genres;
+    private List<String> nations;
+    private List<String> languages;
+    private List<String> genres;
     private String citation;
 
-    public Laureate(String name, String birth_death, String nations, String languages, String genres, String citation) {
+    public Laureate(String name, String birth_death, List<String> nations, List<String> languages, List<String> genres, String citation) {
         this.name = name;
         this.birth_death = birth_death;
         this.nations = nations;
@@ -17,5 +19,41 @@ public class Laureate {
         this.genres = genres;
         this.citation = citation;
     }
+    public String getName() {
+        return name;
+    }
+
+    public String getBirthDeath() {
+        return birth_death;
+    }
+    
+    public String getNations() {
+        return birth_death;
+    }
+
+    public List<String> getLanguages() {
+        return languages;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public String getCitation() {
+        return citation;
+    }
+    
+     @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Laureate{name=").append(name);
+        sb.append(", birth_death=").append(birth_death);
+        sb.append(", nations=").append(nations);
+        sb.append(", languages=").append(languages);
+        sb.append(", genres=").append(genres);
+        sb.append(", citation=").append(citation);
+        return sb.toString();
+    }
+    
 
 }
