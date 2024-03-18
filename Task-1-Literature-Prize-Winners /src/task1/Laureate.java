@@ -5,13 +5,13 @@ import java.util.List;
 public class Laureate {
 
     private String name;
-    private String birth_death;
+    private List<String> birth_death; // list
     private List<String> nations;
     private List<String> languages;
     private List<String> genres;
     private String citation;
 
-    public Laureate(String name, String birth_death, List<String> nations, List<String> languages, List<String> genres, String citation) {
+    public Laureate(String name, List<String> birth_death, List<String> nations, List<String> languages, List<String> genres, String citation) {
         this.name = name;
         this.birth_death = birth_death;
         this.nations = nations;
@@ -23,12 +23,12 @@ public class Laureate {
         return name;
     }
 
-    public String getBirthDeath() {
+    public List<String> getBirthDeath() {
         return birth_death;
     }
     
-    public String getNations() {
-        return birth_death;
+    public List<String> getNations() {
+        return nations;
     }
 
     public List<String> getLanguages() {
