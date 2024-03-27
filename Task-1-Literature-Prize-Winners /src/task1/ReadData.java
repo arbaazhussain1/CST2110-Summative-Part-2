@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -24,8 +25,8 @@ public class ReadData {
             List<Laureate> laureates = new ArrayList<>();
 
             // Define regex patterns for matching laureate information
-//          Pattern laureatePattern = Pattern.compile("^(.*?)\\((\\d{4}-\\d{0,4}|b\\.\\s*\\d{4})?\\)\\|(.*?)\\|(.*?)$");
-            Pattern laureatePattern = Pattern.compile("^(.*?)\\((\\d{4}-\\d{0,4}|b\\.\\s*\\d{4})?\\)\\|([^|]+)\\|([^|]+)$");
+            Pattern laureatePattern = Pattern.compile("^(.*?)\\((\\d{4}-\\d{0,4}|b\\.\\s*\\d{4})?\\)\\|([^|]+)\\|([^|]+)\\|\"(.*?)\"$");
+
 
             Pattern yearFile = Pattern.compile("^\\d{4}$");
             Pattern nameFile = Pattern.compile("^[a-zA-Z\\s]+$");
@@ -50,7 +51,8 @@ public class ReadData {
                         String birthDeath = laureateMatcher.group(2) != null ? laureateMatcher.group(2).trim() : "Unknown";
                         String[] nations = laureateMatcher.group(3).split(",");
                         String[] languages = laureateMatcher.group(4).split(",");
-                        String citation = laureateMatcher.group(5).trim();
+                        String[] citation = laureateMatcher.group(5).split(" "); // Split the citation into individual words
+
                         String[] genres = laureateMatcher.group(6).split(",");
 
                        
@@ -65,7 +67,9 @@ public class ReadData {
 //                        System.out.println("birth_death" + birth_death);
                         System.out.println("nations" + nations);
                         System.out.println("languages" + languages);
-                        System.out.println("citation" + citation);
+//                        System.out.println("citation" + citation);
+                        System.out.println("citation" + Arrays.toString(citation)); // Display citation as an array of words
+
                         System.out.println("genres" + genres);
 
                         List<String> nationList = new ArrayList<>();
