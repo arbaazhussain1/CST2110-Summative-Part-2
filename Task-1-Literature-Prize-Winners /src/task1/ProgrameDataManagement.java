@@ -10,9 +10,14 @@ public class ProgrameDataManagement {
     List<LiteraturePrize> ReadInPrizes = new ArrayList<>();
 
     public void start() {
+        
+             // testing  printPrizes
+                printPrizes();
+
         ReadData reader = new ReadData();
         ReadInPrizes = reader.readPrizesFromFile();
         Scanner scanner = new Scanner(System.in);
+        
 
         String choice;
         do {
@@ -47,6 +52,17 @@ public class ProgrameDataManagement {
                     System.out.println("Invalid choice. Please try again.");
             }
         } while (!"0".equals(choice));
+    }
+    
+     // testing  printPrizes
+     public void printPrizes() {
+        List<LiteraturePrize> prizes = ReadInPrizes;
+        System.out.println("----------------------");
+        System.out.println("List of Literature Prizes");
+        System.out.println("----------------------");
+        for (LiteraturePrize prize : prizes) {
+            System.out.println(prize);
+        }
     }
 
     public void listPrizeWinnersByYearRange(Scanner scanner) {
