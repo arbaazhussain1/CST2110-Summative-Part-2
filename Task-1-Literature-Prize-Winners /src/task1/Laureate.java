@@ -9,9 +9,9 @@ public class Laureate {
     private List<String> nations;
     private List<String> languages;
     private List<String> genres;
-    private String citation;
+    private List<String> citation;
 
-    public Laureate(String name, List<String> birth_death, List<String> nations, List<String> languages, List<String> genres, String citation) {
+    public Laureate(String name, List<String> birth_death, List<String> nations, List<String> languages, List<String> citation, List<String> genres) {
         this.name = name;
         this.birth_death = birth_death;
         this.nations = nations;
@@ -19,6 +19,7 @@ public class Laureate {
         this.genres = genres;
         this.citation = citation;
     }
+
     public String getName() {
         return name;
     }
@@ -26,7 +27,7 @@ public class Laureate {
     public List<String> getBirthDeath() {
         return birth_death;
     }
-    
+
     public List<String> getNations() {
         return nations;
     }
@@ -39,21 +40,21 @@ public class Laureate {
         return genres;
     }
 
-    public String getCitation() {
+    public List<String> getCitation() {
         return citation;
     }
-    
-     @Override
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Laureate{name=").append(name);
         sb.append(", birth_death=").append(birth_death);
         sb.append(", nations=").append(nations);
         sb.append(", languages=").append(languages);
-        sb.append(", genres=").append(genres);
         sb.append(", citation=").append(citation);
+        sb.append(", genres=").append(genres);
+
         return sb.toString();
     }
-    
 
 }
