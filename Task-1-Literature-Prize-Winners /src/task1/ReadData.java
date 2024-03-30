@@ -28,11 +28,23 @@ public class ReadData {
             List<Laureate> winners = new ArrayList<>();
 
             // Define regex patterns for matching laureate information
-            Pattern laureatePattern = Pattern.compile("^(.*?)\\((\\d{4}-\\d{0,4}|b\\.\\s*\\d{4})?\\)\\|([^|]+)\\|([^|]+)\\|\"(.*?)\"$");
+            Pattern laureatePattern = Pattern.compile("^(.+)\\|(.+)\\|(.+)$");
 
             Pattern yearFile = Pattern.compile("^\\d{4}$");
-            Pattern nameFile = Pattern.compile("^[a-zA-Z\\s]+$");
-            Pattern birth_deathFile = Pattern.compile("^\\((\\d{4}-\\d{4}|b\\.\\s*\\d{4}|\\d{4}\\s+[-]+\\s+)\\)$");
+            Pattern nameFile = Pattern.compile("([^\\(]+)\\(");
+
+//            Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|b\\.\\s*\\d{4})\\)");
+//Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|\\d{4})\\)");
+//Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|\\d{4})\\)");
+
+//Pattern birth_deathFile = Pattern.compile("\\(b\\.\\s*(\\d{4})\\)");
+
+//Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|b\\.\\s*(\\d{4}))\\)");
+
+//Pattern birth_deathFile = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4})\\)");
+
+Pattern birth_deathFile = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4}(?:-\\d{4})?)\\)");
+
             Pattern nationsFile = Pattern.compile("^\\|([^|]+)\\|$");
             Pattern languagesFile = Pattern.compile("^\\|([^|]+)\\|$");
             Pattern citationFile = Pattern.compile("^(.*?)$");
@@ -42,14 +54,86 @@ public class ReadData {
 //                 System.out.println(line);
                 Matcher yearMatcher = yearFile.matcher(line);
 
-                if (yearMatcher.find()) { 
+                if (yearMatcher.find()) {
 
                     year = yearMatcher.group(0).trim();
                     currentPrize = new LiteraturePrize(year);
-                    prizes.add(currentPrize); 
+                    prizes.add(currentPrize);
 
-                    System.out.println(year.toString());
+//                    System.out.println(year.toString());
+                } else if (line.equals("Not awarded")) {
+                    // If the line indicates the prize was not awarded, move to the next line
+                    continue;
 
+                } else if (line.equals(endOfPrize)) {
+                    // If the line marks the end of laureate information, move to the next line
+                    continue;
+                } else {
+                    Matcher laureateMatcher = laureatePattern.matcher(line);
+//                    System.out.println(laureateMatcher.matches());
+                    if (laureateMatcher.matches()) {
+
+                        Matcher nameMatcher = nameFile.matcher(line);
+                        String name = "";
+                        String birth_death = "";
+//                                                System.out.println(nameMatcher.matches());
+
+                        if (nameMatcher.find()) {
+                            name = nameMatcher.group(1);
+//                            System.out.println(name);
+                        }
+
+                        Matcher birth_deathMatcher = birth_deathFile.matcher(line);
+//                                                 System.out.println(birth_deathMatcher.matches());
+                        if (birth_deathMatcher.find()) {
+                            birth_death = birth_deathMatcher.group(1);
+//                                  System.out.println(birth_death);
+
+                        }
+
+                        List<String> birthDeathList;
+
+                        if (birth_death != null && birth_death.startsWith("b.")) {
+                            String birthYear = birth_death.substring(3, 7);
+                            birthDeathList = new ArrayList<>();
+                            birthDeathList.add(birthYear);
+                            birthDeathList.add("----");
+                        } else {
+                            // Otherwise, split birth_death normally
+                            birthDeathList = new ArrayList<>();
+                            String[] birthDeathArray = birth_death.split("-");
+                            for (String yearElement : birthDeathArray) {
+                                birthDeathList.add(yearElement);
+                            }
+                        }
+                        System.out.println(birthDeathList);
+
+//                        for (String Element : birthDeathList) {
+//                            System.out.println(Element);
+//                        }
+                    }
+                    
+//                     List<String> birth_death = laureateMatcher.group(2).split("-");
+                        String[] nations = laureateMatcher.group(3).split(",");
+                        String[] languages = laureateMatcher.group(4).split(",");
+                        String[] citation = laureateMatcher.group(5).split(" "); // Split the citation into individual words
+                        String[] genres = laureateMatcher.group(6).split(",");
+                        
+                        
+                          LiteraturePrize prize = new LiteraturePrize(year);
+                         prizes.add(prize); // add the prize to prizes
+                         
+                         
+                         
+                         
+                         
+//                         System.out.println("year" + year);
+//                        System.out.println("name" + name);
+//                        System.out.println("birth_death" + birth_death);
+//                        System.out.println("nations" + nations);
+//                        System.out.println("languages" + languages);
+//                        System.out.println("citation" + Arrays.toString(citation)); // Display citation as an array of words
+//                        System.out.println("genres" + genres);
                 }
             }
 
