@@ -36,16 +36,14 @@ public class ReadData {
 //            Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|b\\.\\s*\\d{4})\\)");
 //Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|\\d{4})\\)");
 //Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|\\d{4})\\)");
-
 //Pattern birth_deathFile = Pattern.compile("\\(b\\.\\s*(\\d{4})\\)");
-
 //Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|b\\.\\s*(\\d{4}))\\)");
-
 //Pattern birth_deathFile = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4})\\)");
+            Pattern birth_deathFile = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4}(?:-\\d{4})?)\\)");
 
-Pattern birth_deathFile = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4}(?:-\\d{4})?)\\)");
+//            Pattern nationsFile = Pattern.compile("^\\|([^|]+)\\|$");
+Pattern nationsFile = Pattern.compile("\\|([^|]+)\\|");
 
-            Pattern nationsFile = Pattern.compile("^\\|([^|]+)\\|$");
             Pattern languagesFile = Pattern.compile("^\\|([^|]+)\\|$");
             Pattern citationFile = Pattern.compile("^(.*?)$");
             Pattern genresFile = Pattern.compile("^([^|]+)$");
@@ -106,34 +104,26 @@ Pattern birth_deathFile = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4}
                                 birthDeathList.add(yearElement);
                             }
                         }
-                        System.out.println(birthDeathList);
+//                        System.out.println(birthDeathList);
 
 //                        for (String Element : birthDeathList) {
 //                            System.out.println(Element);
-//                        }
+//                        } 
+                        Matcher nationsMatcher = nationsFile.matcher(line); // Match nations
+                         String nations = "";
+//                        System.out.println(nationsMatcher.matches());
+
+                        if (nationsMatcher.find()) {
+                             nations = nationsMatcher.group(1);
+//    System.out.println("Matcher matches: " + nationsMatcher.matches()); // Print result of matches() method
+                                                        System.out.println(nations);
+
+                        } else {
+                                   System.out.println("No nations found in the line: " + line);
+
+                        }
                     }
-                    
-//                     List<String> birth_death = laureateMatcher.group(2).split("-");
-                        String[] nations = laureateMatcher.group(3).split(",");
-                        String[] languages = laureateMatcher.group(4).split(",");
-                        String[] citation = laureateMatcher.group(5).split(" "); // Split the citation into individual words
-                        String[] genres = laureateMatcher.group(6).split(",");
-                        
-                        
-                          LiteraturePrize prize = new LiteraturePrize(year);
-                         prizes.add(prize); // add the prize to prizes
-                         
-                         
-                         
-                         
-                         
-//                         System.out.println("year" + year);
-//                        System.out.println("name" + name);
-//                        System.out.println("birth_death" + birth_death);
-//                        System.out.println("nations" + nations);
-//                        System.out.println("languages" + languages);
-//                        System.out.println("citation" + Arrays.toString(citation)); // Display citation as an array of words
-//                        System.out.println("genres" + genres);
+
                 }
             }
 
