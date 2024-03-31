@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -32,20 +31,11 @@ public class ReadData {
 
             Pattern yearFile = Pattern.compile("^\\d{4}$");
             Pattern nameFile = Pattern.compile("([^\\(]+)\\(");
-
-//            Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|b\\.\\s*\\d{4})\\)");
-//Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|\\d{4})\\)");
-//Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|\\d{4})\\)");
-//Pattern birth_deathFile = Pattern.compile("\\(b\\.\\s*(\\d{4})\\)");
-//Pattern birth_deathFile = Pattern.compile("\\((\\d{4}-\\d{4}|b\\.\\s*(\\d{4}))\\)");
-//Pattern birth_deathFile = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4})\\)");
             Pattern birth_deathFile = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4}(?:-\\d{4})?)\\)");
+            Pattern nationsFile = Pattern.compile("\\|([^|]+)\\|");
+            Pattern languagesFile = Pattern.compile("\\|([^|]+)$");
+            Pattern citationFile = Pattern.compile("^\"(.+)\"$");
 
-//            Pattern nationsFile = Pattern.compile("^\\|([^|]+)\\|$");
-Pattern nationsFile = Pattern.compile("\\|([^|]+)\\|");
-
-            Pattern languagesFile = Pattern.compile("^\\|([^|]+)\\|$");
-            Pattern citationFile = Pattern.compile("^(.*?)$");
             Pattern genresFile = Pattern.compile("^([^|]+)$");
 
             while ((line = reader.readLine()) != null) {
@@ -110,17 +100,38 @@ Pattern nationsFile = Pattern.compile("\\|([^|]+)\\|");
 //                            System.out.println(Element);
 //                        } 
                         Matcher nationsMatcher = nationsFile.matcher(line); // Match nations
-                         String nations = "";
+                        String nations = "";
 //                        System.out.println(nationsMatcher.matches());
 
                         if (nationsMatcher.find()) {
-                             nations = nationsMatcher.group(1);
+                            nations = nationsMatcher.group(1);
 //    System.out.println("Matcher matches: " + nationsMatcher.matches()); // Print result of matches() method
-                                                        System.out.println(nations);
+//                                                        System.out.println(nations);
 
                         } else {
-                                   System.out.println("No nations found in the line: " + line);
+                            System.out.println("No nations found in the line: " + line);
 
+                        }
+                        Matcher languagesMatcher = languagesFile.matcher(line); // Match languages
+//                                            System.out.println(languagesMatcher.matches());
+                        String languages = "";
+                        if (languagesMatcher.find()) {
+                            languages = languagesMatcher.group(1);
+//                                                        System.out.println(languages);
+                        }
+                        // Read the next line for citation
+                        String citationLine = reader.readLine();
+                        if (citationLine != null) {
+                            // Match citation in the next line
+                            Matcher citationMatcher = citationFile.matcher(citationLine);
+                            String citation = "";
+                            if (citationMatcher.find()) {
+                            citation = "\"" + citationMatcher.group(1) + "\""; // Concatenate double quotes
+                                System.out.println(" "+ citation);
+                            }else {
+                                // If the citation line doesn't match the expected pattern, handle accordingly
+                                System.out.println("Invalid citation format: " + citationLine);
+                            }
                         }
                     }
 
