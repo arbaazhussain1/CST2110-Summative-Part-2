@@ -126,11 +126,25 @@ public class ReadData {
                             Matcher citationMatcher = citationFile.matcher(citationLine);
                             String citation = "";
                             if (citationMatcher.find()) {
-                            citation = "\"" + citationMatcher.group(1) + "\""; // Concatenate double quotes
-                                System.out.println(" "+ citation);
-                            }else {
+                                citation = "\"" + citationMatcher.group(1) + "\""; // Concatenate double quotes
+//                                System.out.println(" " + citation);
+                            } else {
                                 // If the citation line doesn't match the expected pattern, handle accordingly
                                 System.out.println("Invalid citation format: " + citationLine);
+                            }
+                            // Read the next line for genres
+                            String genresLine = reader.readLine();
+                            if (genresLine != null) {
+                                // Match citation in the next line
+                                Matcher genresMatcher = genresFile.matcher(genresLine);
+                                String genres = "";
+                                if (genresMatcher.find()) {
+                                    genres = genresMatcher.group(1);
+                                    System.out.println(genres);
+                                } else {
+                                    // If the citation line doesn't match the expected pattern, handle accordingly
+                                    System.out.println("Invalid citation format: " + genresLine);
+                                }
                             }
                         }
                     }
