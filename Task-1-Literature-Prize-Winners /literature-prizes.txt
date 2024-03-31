@@ -161,7 +161,7 @@ John Galsworthy (1867-1933)|United Kingdom|English
 novel
 -----
 1933
-Ivan Bunin (1870-1953)|Stateless|Russian	
+Ivan Bunin (1870-1953)|Stateless|Russian
 "for the strict artistry with which he has carried on the classical Russian traditions in prose writing"
 short story, poetry, novel
 -----
@@ -174,7 +174,7 @@ drama, novel, short story
 Not awarded
 -----
 1936
-Eugene O'Neill (1888-1953)|United States|English	
+Eugene O'Neill (1888-1953)|United States|English
 "for the power, honesty and deep-felt emotions of his dramatic works, which embody an original concept of tragedy"
 drama
 -----

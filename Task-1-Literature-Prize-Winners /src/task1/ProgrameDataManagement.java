@@ -19,9 +19,9 @@ public class ProgrameDataManagement {
         ReadInPrizes = reader.readPrizesFromFile();
         Scanner scanner = new Scanner(System.in);
         
-//        for (LiteraturePrize prize: ReadInPrizes  ) { 
-//            System.out.println(prize);
-//        }
+        for (LiteraturePrize prize: ReadInPrizes  ) { 
+            System.out.println(prize);
+        }
 
         String choice;
         do {
