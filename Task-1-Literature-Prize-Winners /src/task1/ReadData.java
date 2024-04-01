@@ -54,36 +54,57 @@ public class ReadData {
                     List<String> citationList = new ArrayList<>();
                     List<String> genresList = new ArrayList<>();
 
-                    Matcher laureateMatcher = Pattern.compile("^(.+?)\\|(.+?)\\|(.+)$").matcher(line);
+//                    Matcher laureateMatcher = Pattern.compile("^(.+?)\\|(.+?)\\|(.+)$").matcher(line);
+                    Matcher laureateMatcher = Pattern.compile("^(.+?)\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4}(?:-\\d{4})?)\\)\\|([^|]+)\\|([^|]+)$").matcher(line);
 
                     if (laureateMatcher.matches()) {
                         String name = laureateMatcher.group(1).trim();
-                        String birth_death = laureateMatcher.group(3).trim();
-                        String nations = laureateMatcher.group(2).trim();
-                        String languages = laureateMatcher.group(3).trim(); // Adjusted to group 3 for languages
+//                       
 
-                        // Process birth_death
-                        if (birth_death != null && birth_death.startsWith("b.")) {
-                            String birthYear = birth_death.substring(3, 7);
-                            birthDeathList.add(birthYear);
-                            birthDeathList.add("----");
-                        } else {
-                            String[] birthDeathArray = birth_death.split("-");
-                            for (String yearElement : birthDeathArray) {
-                                birthDeathList.add(yearElement);
+                        Matcher birth_deathMatcher = Pattern.compile("\\((?:\\d{4}-\\d{4}|b\\.\\s*)?(\\d{4}(?:-\\d{4})?)\\)").matcher(line);
+                        if (birth_deathMatcher.find()) { // Check if a match is found
+                            String birth_death = birth_deathMatcher.group(1); // Access the matched value
+                            // Process birth_death
+                            if (birth_death != null && birth_death.startsWith("b.")) {
+                                String birthYear = birth_death.substring(3, 7);
+                                birthDeathList.add(birthYear);
+                                birthDeathList.add("----");
+                            } else {
+                                String[] birthDeathArray = birth_death.split("-");
+                                if (birthDeathArray.length > 1) {
+                                    birthDeathList.add(birthDeathArray[0]);
+                                    birthDeathList.add(birthDeathArray[1]);
+                                } else {
+                                    birthDeathList.add(birthDeathArray[0]);
+                                    birthDeathList.add("----");
+                                }
                             }
                         }
 
                         // Process nations
-                        String[] nationsArray = nations.split(",");
-                        for (String nationsElement : nationsArray) {
-                            nationsList.add(nationsElement);
+                        Matcher nationsMatcher = Pattern.compile("\\|([^|]+)\\|").matcher(line);
+                        if (nationsMatcher.find()) {
+                            String nations = nationsMatcher.group(1);
+                            String[] nationsArray = nations.split(",");
+                            for (String nationsElement : nationsArray) {
+                                String[] individualNations = nationsElement.split("\\s*,\\s*"); // Split individual nations by comma
+                                for (String nation : individualNations) {
+                                    nationsList.add(nation.trim()); // Add each nation to the list after trimming whitespace
+                                }
+                            }
                         }
 
                         // Process languages
-                        String[] languagesArray = languages.split(",");
-                        for (String languagesElement : languagesArray) {
-                            languagesList.add(languagesElement);
+                        Matcher languagesMatcher = Pattern.compile("[^|]+$").matcher(line);
+                        if (languagesMatcher.find()) {
+                            String languagesData = languagesMatcher.group(); // Access the matched value
+                            String[] languagesArray = languagesData.split(",");
+                            for (String languagesElement : languagesArray) {
+                                String[] individualLanguages = languagesElement.trim().split("\\s*,\\s*"); // Split individual languages by comma
+                                for (String language : individualLanguages) {
+                                    languagesList.add(language.trim()); // Add each language to the list after trimming whitespace
+                                }
+                            }
                         }
 
                         // Read the next line for citation
