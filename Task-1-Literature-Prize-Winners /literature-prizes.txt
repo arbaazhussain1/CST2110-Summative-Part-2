@@ -246,7 +246,7 @@ Pär Lagerkvist (1891-1974)|Sweden|Swedish
 poetry, novel, short story, drama
 -----
 1952
-François Mauriac (1885-970)|France|French
+François Mauriac (1885-1970)|France|French
 "for the deep spiritual insight and the artistic intensity with which he has in his novels penetrated the drama of human life"
 novel, short story
 -----
@@ -526,7 +526,7 @@ Orhan Pamuk (b. 1952)|Turkey|Turkish
 "who in the quest for the melancholic soul of his native city has discovered new symbols for the clash and interlacing of cultures"
 novel, screenplay, autobiography, essay
 -----
-2007	
+2007
 Doris Lessing (1919-2013)|United Kingdom,Zimbabwe|English
 "that epicist of the female experience, who with scepticism, fire and visionary power has subjected a divided civilisation to scrutiny"
 novel, short story, memoir, autobiography, drama, poetry, essay
@@ -596,12 +596,12 @@ Louise Glück (b. 1943)|United States|English
 "for her unmistakable poetic voice that with austere beauty makes individual existence universal"
 poetry, essay
 -----
-2021	
+2021
 Abdulrazak Gurnah (b. 1948)|Tanzania,United Kingdom|English
 "for his uncompromising and compassionate penetration of the effects of colonialism and the fate of the refugee in the gulf between cultures and continents"
 novel, short story, essay
 -----
-2022	
+2022
 Annie Ernaux (b. 1940)|France|French
 "for the courage and clinical acuity with which she uncovers the roots, estrangements and collective restraints of personal memory"
 autobiography, novel

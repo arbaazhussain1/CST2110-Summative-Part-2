@@ -29,10 +29,18 @@ public class ReadData {
                     currentPrize = new LiteraturePrize(year);
                 } else if (line.equals("Not awarded")) {
                     Laureate notAwarded = new Laureate("Not awarded", null, null, null, null, null);
-                    currentPrize.setWinners(notAwarded);
-                    prizes.add(currentPrize);
-                } else if (line.equals(endOfPrize) || line == null) {
-                    prizes.add(currentPrize);
+                    if (currentPrize != null) {
+                        currentPrize.setWinners(notAwarded);
+                        prizes.add(currentPrize);
+                        currentPrize = null; // Reset currentPrize after adding it to the list
+                    } else {
+                        System.out.println("Error: currentPrize is null");
+                    }
+                } else if (line.equals(endOfPrize) || line.isBlank()) {
+                    if (currentPrize != null) {
+                        prizes.add(currentPrize);
+                        currentPrize = null; // Reset currentPrize after adding it to the list
+                    }
                 } else {
                     List<String> birthDeathList = new ArrayList<>();
                     List<String> nationsList = new ArrayList<>();
@@ -45,7 +53,7 @@ public class ReadData {
                         String name = laureateMatcher.group(1).trim();
                         String birth_death = laureateMatcher.group(3).trim();
                         String nations = laureateMatcher.group(2).trim();
-                        String languages = laureateMatcher.group(3).trim();
+                        String languages = laureateMatcher.group(3).trim(); // Adjusted to group 3 for languages
 
                         // Process birth_death
                         if (birth_death != null && birth_death.startsWith("b.")) {
@@ -100,16 +108,26 @@ public class ReadData {
                             }
                         }
 
-                        // Create and add the laureate to the list of winners for the current prize
-                        Laureate laureate = new Laureate(name, birthDeathList, nationsList, languagesList, citationList, genresList);
-                        currentPrize.setWinners(laureate);
+                        // Check if currentPrize is null
+                        if (currentPrize != null) {
+                            // Create and add the laureate to the list of winners for the current prize
+                            Laureate laureate = new Laureate(name, birthDeathList, nationsList, languagesList, citationList, genresList);
+                            currentPrize.setWinners(laureate);
+                        } else {
+                            System.out.println("Error: currentPrize is null");
+                        }
                     }
                 }
             }
+
+            // Add the last prize if it's not null
+            if (currentPrize != null) {
+                prizes.add(currentPrize);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         return prizes;
     }
-
 }
