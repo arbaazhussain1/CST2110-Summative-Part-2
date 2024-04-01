@@ -23,23 +23,29 @@ public class ReadData {
             String endOfPrize = "-----";
 
             while ((line = reader.readLine()) != null) {
-                Matcher yearMatcher = Pattern.compile("^\\d{4}$").matcher(line);
+//                System.out.println("Processing line: " + line);
+                Matcher yearMatcher = Pattern.compile("^(\\d{4})\\s*$").matcher(line);
+
                 if (yearMatcher.find()) {
-                    String year = yearMatcher.group(0).trim();
+                    String year = yearMatcher.group(1).trim();
+//                    System.out.println("Found year: " + year);
+                    if (currentPrize != null) {
+                        prizes.add(currentPrize);
+                    }
                     currentPrize = new LiteraturePrize(year);
                 } else if (line.equals("Not awarded")) {
                     Laureate notAwarded = new Laureate("Not awarded", null, null, null, null, null);
                     if (currentPrize != null) {
                         currentPrize.setWinners(notAwarded);
-                        prizes.add(currentPrize);
-                        currentPrize = null; // Reset currentPrize after adding it to the list
                     } else {
                         System.out.println("Error: currentPrize is null");
                     }
                 } else if (line.equals(endOfPrize) || line.isBlank()) {
                     if (currentPrize != null) {
                         prizes.add(currentPrize);
-                        currentPrize = null; // Reset currentPrize after adding it to the list
+                        currentPrize = null;
+                    } else {
+                        System.out.println("Encountered endOfPrize or blank line but currentPrize is null");
                     }
                 } else {
                     List<String> birthDeathList = new ArrayList<>();
@@ -48,7 +54,8 @@ public class ReadData {
                     List<String> citationList = new ArrayList<>();
                     List<String> genresList = new ArrayList<>();
 
-                    Matcher laureateMatcher = Pattern.compile("^(.+)\\|(.+)\\|(.+)$").matcher(line);
+                    Matcher laureateMatcher = Pattern.compile("^(.+?)\\|(.+?)\\|(.+)$").matcher(line);
+
                     if (laureateMatcher.matches()) {
                         String name = laureateMatcher.group(1).trim();
                         String birth_death = laureateMatcher.group(3).trim();
