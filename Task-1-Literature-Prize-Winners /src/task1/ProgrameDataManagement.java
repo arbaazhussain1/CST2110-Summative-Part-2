@@ -164,14 +164,22 @@ public class ProgrameDataManagement {
                         int maxLines = Math.max(languages.size(), genres.size());
 
                         // Print the languages and genres
+                        // Print the languages and genres
                         for (int i = 0; i < maxLines; i++) {
                             if (i == 0) {
+                                // Print the first language and genre in the same line as the laureate's name
                                 System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n",
                                         laureate.getName(), laureate.getBirthDeath().get(0), laureate.getBirthDeath().get(1),
                                         i < languages.size() ? languages.get(i) : "", i < genres.size() ? genres.get(i) : "");
                             } else {
+                                // For subsequent lines, print only languages and genres
+                                // If there are no more languages to print, pad with an empty string
+                                String lang = i < languages.size() ? languages.get(i) : "";
+                                // If there are no more genres to print, pad with an empty string
+                                String genre = i < genres.size() ? genres.get(i) : "";
+                                // Print the line with empty placeholders for name, birth, and death
                                 System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n",
-                                        "", "", "", i < languages.size() ? languages.get(i) : "", i < genres.size() ? genres.get(i) : "");
+                                        "", "", "", lang.trim(), genre.trim());
                             }
                         }
 
@@ -180,8 +188,10 @@ public class ProgrameDataManagement {
 
                         // Print the Citation line with proper alignment
                         System.out.println("|                                                Citation:                                                  |");
+                        System.out.println("|                                                                                                           |");
+
                         String citation = String.join(" ", laureate.getCitation());
-                        printAlignedText(citation, 100); // Adjusted formatting here
+                        printCenteredCitation(citation, 100); // Adjusted formatting here
 
                         // Print the separator line between citation and next record
                         System.out.println("------------------------------------------------------------------------------------------------------------");
@@ -194,26 +204,44 @@ public class ProgrameDataManagement {
         }
     }
 
-// Helper method to print text aligned with fixed width
-    private void printAlignedText(String text, int width) {
-        String[] words = text.split("\\s+");
-        StringBuilder line = new StringBuilder();
-        for (String word : words) {
-            if (line.length() + word.length() + 1 <= width) {
-                if (line.length() > 0) {
-                    line.append(" ");
+// Helper method to print citation centered and aligned with '|'
+    private void printCenteredCitation(String citation, int width) {
+        String[] lines = citation.split("\\r?\\n");
+        for (String line : lines) {
+            // Split the line into segments that fit within the width
+            StringBuilder currentLine = new StringBuilder();
+            String[] words = line.split("\\s+");
+            for (String word : words) {
+                if (currentLine.length() + word.length() + 1 <= width) { // Add 1 for the space after each word
+                    if (currentLine.length() > 0) {
+                        currentLine.append(" ");
+                    }
+                    currentLine.append(word);
+                } else {
+                    printCenteredTextWithAlignment(currentLine.toString(), width);
+                    currentLine = new StringBuilder(word);
                 }
-                line.append(word);
-            } else {
-                // Print alignment with spaces before Citation
-                System.out.printf("| %-90s |\n", line.toString());
-                line = new StringBuilder(word);
+            }
+            // Print the remaining part of the line
+            if (currentLine.length() > 0) {
+                printCenteredTextWithAlignment(currentLine.toString(), width);
             }
         }
-        // Print remaining part of the line
-        if (line.length() > 0) {
-            System.out.printf("| %-90s |\n", line.toString());
+    }
+
+// Helper method to print text centered with '|' characters aligned
+// Helper method to print text centered with '|' characters aligned
+    private void printCenteredTextWithAlignment(String text, int width) {
+
+        int totalSpaces = width - text.length(); // Total available spaces
+        int sideSpaces = totalSpaces / 2; // Equal spaces on both sides of the text
+        int remainingSpaces = totalSpaces % 2; // Check for any remaining spaces
+        StringBuilder padding = new StringBuilder();
+        for (int i = 0; i < sideSpaces; i++) {
+            padding.append(" ");
         }
+        // Adjust the format to align '|' characters with the rest of the text
+        System.out.printf("|%s %s %s%s|\n", padding, text, remainingSpaces > 0 ? " " : "", padding);
     }
 
     private List<String> splitStringIntoLines(List<String> input, int lineLength) {
