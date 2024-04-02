@@ -125,6 +125,8 @@ public class ProgrameDataManagement {
         if (year < 1901 || year > 2022) {
             System.out.println("Invalid year. Please enter a year between 1901 and 2022.");
         }
+        // Consume the newline character left in the buffer
+        scanner.nextLine();
     } while (year < 1901 || year > 2022);
 
     // Print the header line with straight "|" characters
@@ -145,24 +147,31 @@ public class ProgrameDataManagement {
                 findWinners = true;
                 for (Laureate laureate : prize.getWinners()) {
                     // Print winner information
-                    System.out.printf("| %-25s | %-4s | %-4s | ",
-                            laureate.getName(), laureate.getBirthDeath().get(0), laureate.getBirthDeath().get(1));
+                    List<String> languages = laureate.getLanguages();
+                    List<String> genres = laureate.getGenres();
 
-                    // Print languages on one line or split if needed
-                    String languages = String.join(", ", laureate.getLanguages());
-                    printAlignedText(languages, 30);
+                    // Determine the maximum number of lines needed for languages and genres
+                    int maxLines = Math.max(languages.size(), genres.size());
 
-                    // Print genres on one line or split if needed
-                    String genres = String.join(", ", laureate.getGenres());
-                    printAlignedText(genres, 30);
+                    // Print the languages and genres
+                    for (int i = 0; i < maxLines; i++) {
+                        if (i == 0) {
+                            System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n",
+                                    laureate.getName(), laureate.getBirthDeath().get(0), laureate.getBirthDeath().get(1),
+                                    i < languages.size() ? languages.get(i) : "", i < genres.size() ? genres.get(i) : "");
+                        } else {
+                            System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n",
+                                    "", "", "", i < languages.size() ? languages.get(i) : "", i < genres.size() ? genres.get(i) : "");
+                        }
+                    }
 
                     // Print the separator line between data and citation
                     System.out.println("------------------------------------------------------------------------------------------------------------");
 
                     // Print the Citation line with proper alignment
-                    System.out.println("| Citation:                                                                                                 |");
+                    System.out.println("|                                                Citation:                                                  |");
                     String citation = String.join(" ", laureate.getCitation());
-                    printAlignedText(citation, 108); // Adjusted formatting here
+                    printAlignedText(citation, 100); // Adjusted formatting here
 
                     // Print the separator line between citation and next record
                     System.out.println("------------------------------------------------------------------------------------------------------------");
@@ -176,30 +185,26 @@ public class ProgrameDataManagement {
 }
 
 // Helper method to print text aligned with fixed width
-private void printAlignedText(String text, int width) {
-    String[] words = text.split("\\s+");
-    StringBuilder line = new StringBuilder();
-    for (String word : words) {
-        if (line.length() + word.length() + 1 <= width) {
-            if (line.length() > 0) {
-                line.append(" ");
+    private void printAlignedText(String text, int width) {
+        String[] words = text.split("\\s+");
+        StringBuilder line = new StringBuilder();
+        for (String word : words) {
+            if (line.length() + word.length() + 1 <= width) {
+                if (line.length() > 0) {
+                    line.append(" ");
+                }
+                line.append(word);
+            } else {
+                // Print alignment with spaces before Citation
+                System.out.printf("| %-90s |\n", line.toString()); 
+                line = new StringBuilder(word);
             }
-            line.append(word);
-        } else {
-            // Print alignment with spaces before Citation
-            System.out.printf("| %-30s |\n", line.toString()); // Adjusted formatting here
-            line = new StringBuilder(word);
+        }
+        // Print remaining part of the line
+        if (line.length() > 0) {
+            System.out.printf("| %-90s |\n", line.toString()); 
         }
     }
-    // Print remaining part of the line
-    if (line.length() > 0) {
-        System.out.printf("| %-30s |\n", line.toString()); // Adjusted formatting here
-    }
-}
-
-
-
-
 
     private List<String> splitStringIntoLines(List<String> input, int lineLength) {
         List<String> lines = new ArrayList<>();
