@@ -124,19 +124,19 @@ public class ProgrameDataManagement {
     }
 
     public void selectPrizeWinner(Scanner scanner) {
-        int year;
+        int year = 0; // Initialize year outside the loop
+
         do {
             System.out.println("Enter year of prize > (1901-2022): ");
-            while (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a valid year between 1901 and 2022.");
-                scanner.next(); // consume the invalid token
+            String yearInput = scanner.nextLine().trim(); // Get the input and remove leading/trailing whitespace
+            if (yearInput.length() != 4 || !yearInput.matches("\\d{4}")) {
+                System.out.println("Invalid input. Please enter a valid four-digit year between 1901 and 2022.");
+                continue; // Restart the loop to prompt for input again
             }
-            year = scanner.nextInt();
+            year = Integer.parseInt(yearInput);
             if (year < 1901 || year > 2022) {
                 System.out.println("Invalid year. Please enter a year between 1901 and 2022.");
             }
-            // Consume the newline character left in the buffer
-            scanner.nextLine();
         } while (year < 1901 || year > 2022);
 
         // Print the header line with straight "|" characters
