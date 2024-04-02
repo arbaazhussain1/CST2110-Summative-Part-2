@@ -191,7 +191,7 @@ public class ProgrameDataManagement {
                         System.out.println("|                                                                                                           |");
 
                         String citation = String.join(" ", laureate.getCitation());
-                        printCenteredCitation(citation, 100); // Adjusted formatting here
+                        printCenteredCitation(citation, 105); // Adjusted formatting here
 
                         // Print the separator line between citation and next record
                         System.out.println("------------------------------------------------------------------------------------------------------------");
@@ -229,7 +229,6 @@ public class ProgrameDataManagement {
         }
     }
 
-// Helper method to print text centered with '|' characters aligned
 // Helper method to print text centered with '|' characters aligned
     private void printCenteredTextWithAlignment(String text, int width) {
 
