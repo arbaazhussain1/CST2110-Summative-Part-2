@@ -57,13 +57,18 @@ public class ProgrameDataManagement {
     }
 
     public void listPrizeWinnersByYearRange(Scanner scanner) {
-        int startYear;
-        int endYear;
+        int startYear = 0;
+        int endYear = 0;
 
         // Prompt the user to enter the start year within the valid range
         do {
             System.out.println("Enter start year > (1901-2022):");
-            startYear = Integer.parseInt(scanner.nextLine());
+            String startInput = scanner.nextLine().trim(); // Get the input and remove leading/trailing whitespace
+            if (startInput.length() != 4 || !startInput.matches("\\d+")) {
+                System.out.println("Invalid input. Please enter a valid year between 1901 and 2022.");
+                continue; // Restart the loop to prompt for input again
+            }
+            startYear = Integer.parseInt(startInput);
             if (startYear < 1901 || startYear > 2022) {
                 System.out.println("Invalid year. Please enter a year between 1901 and 2022.");
             }
@@ -72,7 +77,12 @@ public class ProgrameDataManagement {
         // Prompt the user to enter the end year within the valid range
         do {
             System.out.println("Enter end year > (1901-2022):");
-            endYear = Integer.parseInt(scanner.nextLine());
+            String endInput = scanner.nextLine().trim(); // Get the input and remove leading/trailing whitespace
+            if (endInput.length() != 4 || !endInput.matches("\\d+")) {
+                System.out.println("Invalid input. Please enter a valid year between 1901 and 2022.");
+                continue; // Restart the loop to prompt for input again
+            }
+            endYear = Integer.parseInt(endInput);
             if (endYear < 1901 || endYear > 2022) {
                 System.out.println("Invalid year. Please enter a year between 1901 and 2022.");
             } else if (endYear < startYear) {
@@ -114,75 +124,75 @@ public class ProgrameDataManagement {
     }
 
     public void selectPrizeWinner(Scanner scanner) {
-    int year;
-    do {
-        System.out.println("Enter year of prize > (1901-2022): ");
-        while (!scanner.hasNextInt()) {
-            System.out.println("Invalid input. Please enter a valid year between 1901 and 2022.");
-            scanner.next(); // consume the invalid token
-        }
-        year = scanner.nextInt();
-        if (year < 1901 || year > 2022) {
-            System.out.println("Invalid year. Please enter a year between 1901 and 2022.");
-        }
-        // Consume the newline character left in the buffer
-        scanner.nextLine();
-    } while (year < 1901 || year > 2022);
+        int year;
+        do {
+            System.out.println("Enter year of prize > (1901-2022): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid year between 1901 and 2022.");
+                scanner.next(); // consume the invalid token
+            }
+            year = scanner.nextInt();
+            if (year < 1901 || year > 2022) {
+                System.out.println("Invalid year. Please enter a year between 1901 and 2022.");
+            }
+            // Consume the newline character left in the buffer
+            scanner.nextLine();
+        } while (year < 1901 || year > 2022);
 
-    // Print the header line with straight "|" characters
-    System.out.println("------------------------------------------------------------------------------------------------------------");
+        // Print the header line with straight "|" characters
+        System.out.println("------------------------------------------------------------------------------------------------------------");
 
-    // Print the column headers with fixed widths
-    System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n", "Winner(s)", "Born", "Died", "Language(s)", "Genre(s)");
+        // Print the column headers with fixed widths
+        System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n", "Winner(s)", "Born", "Died", "Language(s)", "Genre(s)");
 
-    // Print the separator line between header and data
-    System.out.println("------------------------------------------------------------------------------------------------------------");
+        // Print the separator line between header and data
+        System.out.println("------------------------------------------------------------------------------------------------------------");
 
-    boolean findWinners = false;
-    for (LiteraturePrize prize : ReadInPrizes) {
-        int prizeYear = Integer.parseInt(prize.getYear());
+        boolean findWinners = false;
+        for (LiteraturePrize prize : ReadInPrizes) {
+            int prizeYear = Integer.parseInt(prize.getYear());
 
-        if (prizeYear == year) {
-            if (prize != null) {
-                findWinners = true;
-                for (Laureate laureate : prize.getWinners()) {
-                    // Print winner information
-                    List<String> languages = laureate.getLanguages();
-                    List<String> genres = laureate.getGenres();
+            if (prizeYear == year) {
+                if (prize != null) {
+                    findWinners = true;
+                    for (Laureate laureate : prize.getWinners()) {
+                        // Print winner information
+                        List<String> languages = laureate.getLanguages();
+                        List<String> genres = laureate.getGenres();
 
-                    // Determine the maximum number of lines needed for languages and genres
-                    int maxLines = Math.max(languages.size(), genres.size());
+                        // Determine the maximum number of lines needed for languages and genres
+                        int maxLines = Math.max(languages.size(), genres.size());
 
-                    // Print the languages and genres
-                    for (int i = 0; i < maxLines; i++) {
-                        if (i == 0) {
-                            System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n",
-                                    laureate.getName(), laureate.getBirthDeath().get(0), laureate.getBirthDeath().get(1),
-                                    i < languages.size() ? languages.get(i) : "", i < genres.size() ? genres.get(i) : "");
-                        } else {
-                            System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n",
-                                    "", "", "", i < languages.size() ? languages.get(i) : "", i < genres.size() ? genres.get(i) : "");
+                        // Print the languages and genres
+                        for (int i = 0; i < maxLines; i++) {
+                            if (i == 0) {
+                                System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n",
+                                        laureate.getName(), laureate.getBirthDeath().get(0), laureate.getBirthDeath().get(1),
+                                        i < languages.size() ? languages.get(i) : "", i < genres.size() ? genres.get(i) : "");
+                            } else {
+                                System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n",
+                                        "", "", "", i < languages.size() ? languages.get(i) : "", i < genres.size() ? genres.get(i) : "");
+                            }
                         }
+
+                        // Print the separator line between data and citation
+                        System.out.println("------------------------------------------------------------------------------------------------------------");
+
+                        // Print the Citation line with proper alignment
+                        System.out.println("|                                                Citation:                                                  |");
+                        String citation = String.join(" ", laureate.getCitation());
+                        printAlignedText(citation, 100); // Adjusted formatting here
+
+                        // Print the separator line between citation and next record
+                        System.out.println("------------------------------------------------------------------------------------------------------------");
                     }
-
-                    // Print the separator line between data and citation
-                    System.out.println("------------------------------------------------------------------------------------------------------------");
-
-                    // Print the Citation line with proper alignment
-                    System.out.println("|                                                Citation:                                                  |");
-                    String citation = String.join(" ", laureate.getCitation());
-                    printAlignedText(citation, 100); // Adjusted formatting here
-
-                    // Print the separator line between citation and next record
-                    System.out.println("------------------------------------------------------------------------------------------------------------");
                 }
             }
         }
+        if (!findWinners) {
+            System.out.println("No prize winner found for the year " + year);
+        }
     }
-    if (!findWinners) {
-        System.out.println("No prize winner found for the year " + year);
-    }
-}
 
 // Helper method to print text aligned with fixed width
     private void printAlignedText(String text, int width) {
@@ -196,13 +206,13 @@ public class ProgrameDataManagement {
                 line.append(word);
             } else {
                 // Print alignment with spaces before Citation
-                System.out.printf("| %-90s |\n", line.toString()); 
+                System.out.printf("| %-90s |\n", line.toString());
                 line = new StringBuilder(word);
             }
         }
         // Print remaining part of the line
         if (line.length() > 0) {
-            System.out.printf("| %-90s |\n", line.toString()); 
+            System.out.printf("| %-90s |\n", line.toString());
         }
     }
 
