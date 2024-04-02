@@ -15,14 +15,12 @@ public class ProgrameDataManagement {
         ReadInPrizes = reader.readPrizesFromFile();
         Scanner scanner = new Scanner(System.in);
 
-        for (LiteraturePrize prize: ReadInPrizes  ) { 
-            for (Laureate laureate : prize.getWinners()){
-//                System.out.println(laureate.getBirthDeath().get(0));
-            }
-                        
-            System.out.println(prize);
-
-        }
+//        for (LiteraturePrize prize: ReadInPrizes  ) { 
+//            for (Laureate laureate : prize.getWinners()){
+////                System.out.println(laureate.getBirthDeath().get(0));
+//            }    
+//            System.out.println(prize);
+//        }
         String choice;
         do {
             System.out.println("----------------------");
@@ -116,64 +114,135 @@ public class ProgrameDataManagement {
     }
 
     public void selectPrizeWinner(Scanner scanner) {
-        int year;
-        do {
-            System.out.println("Enter year of prize (1901-2022): ");
-            while (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a valid year between 1901 and 2022.");
-                scanner.next(); // consume the invalid token
-            }
-            year = scanner.nextInt();
-            if (year < 1901 || year > 2022) {
-                System.out.println("Invalid year. Please enter a year between 1901 and 2022.");
-            }
-        } while (year < 1901 || year > 2022);
-
-        System.out.println("------------------------------------------------------------------------------------------");
-        System.out.println("| Winner(s)                | Born | Died | Language(s) | Genre(s)                       |");
-        System.out.println("------------------------------------------------------------------------------------------");
-
-//        LiteraturePrize prize = data.getPrizeWinnerByYear(Integer.toString(year));
-
- boolean findWinners = false; 
-        for (LiteraturePrize prize : ReadInPrizes) {
-            int prizeYear = Integer.parseInt(prize.getYear());
-           
-            if (prizeYear == year) {
-
-                if (prize != null) {
-                  findWinners = true;
-                    for (Laureate laureate : prize.getWinners()) {
-                        System.out.printf("| %-25s | %-4s | %-4s | %-12s | %-30s |\n",
-                                laureate.getName(), laureate.getBirthDeath(), laureate.getBirthDeath(),
-                                String.join(", ", laureate.getLanguages()), String.join(", ", laureate.getGenres()));
-                        System.out.println("------------------------------------------------------------------------------------------");
-                        System.out.println("| Citation:                                                                              |");
-//                        System.out.printf("| %-90s |\n", prize.getCitation());
-                        System.out.println("------------------------------------------------------------------------------------------");
-                    }
-
-                }
-
-            }
-        } if (findWinners == false) {
-            System.out.println("No prize winner found for the year " + year);
+    int year;
+    do {
+        System.out.println("Enter year of prize > (1901-2022): ");
+        while (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a valid year between 1901 and 2022.");
+            scanner.next(); // consume the invalid token
         }
+        year = scanner.nextInt();
+        if (year < 1901 || year > 2022) {
+            System.out.println("Invalid year. Please enter a year between 1901 and 2022.");
+        }
+    } while (year < 1901 || year > 2022);
 
+    // Print the header line with straight "|" characters
+    System.out.println("------------------------------------------------------------------------------------------------------------");
+
+    // Print the column headers with fixed widths
+    System.out.printf("| %-25s | %-4s | %-4s | %-30s | %-30s |\n", "Winner(s)", "Born", "Died", "Language(s)", "Genre(s)");
+
+    // Print the separator line between header and data
+    System.out.println("------------------------------------------------------------------------------------------------------------");
+
+    boolean findWinners = false;
+    for (LiteraturePrize prize : ReadInPrizes) {
+        int prizeYear = Integer.parseInt(prize.getYear());
+
+        if (prizeYear == year) {
+            if (prize != null) {
+                findWinners = true;
+                for (Laureate laureate : prize.getWinners()) {
+                    // Print winner information
+                    System.out.printf("| %-25s | %-4s | %-4s | ",
+                            laureate.getName(), laureate.getBirthDeath().get(0), laureate.getBirthDeath().get(1));
+
+                    // Print languages on one line or split if needed
+                    String languages = String.join(", ", laureate.getLanguages());
+                    printAlignedText(languages, 30);
+
+                    // Print genres on one line or split if needed
+                    String genres = String.join(", ", laureate.getGenres());
+                    printAlignedText(genres, 30);
+
+                    // Print the separator line between data and citation
+                    System.out.println("------------------------------------------------------------------------------------------------------------");
+
+                    // Print the Citation line with proper alignment
+                    System.out.println("| Citation:                                                                                                 |");
+                    String citation = String.join(" ", laureate.getCitation());
+                    printAlignedText(citation, 108); // Adjusted formatting here
+
+                    // Print the separator line between citation and next record
+                    System.out.println("------------------------------------------------------------------------------------------------------------");
+                }
+            }
+        }
+    }
+    if (!findWinners) {
+        System.out.println("No prize winner found for the year " + year);
+    }
+}
+
+// Helper method to print text aligned with fixed width
+private void printAlignedText(String text, int width) {
+    String[] words = text.split("\\s+");
+    StringBuilder line = new StringBuilder();
+    for (String word : words) {
+        if (line.length() + word.length() + 1 <= width) {
+            if (line.length() > 0) {
+                line.append(" ");
+            }
+            line.append(word);
+        } else {
+            // Print alignment with spaces before Citation
+            System.out.printf("| %-30s |\n", line.toString()); // Adjusted formatting here
+            line = new StringBuilder(word);
+        }
+    }
+    // Print remaining part of the line
+    if (line.length() > 0) {
+        System.out.printf("| %-30s |\n", line.toString()); // Adjusted formatting here
+    }
+}
+
+
+
+
+
+    private List<String> splitStringIntoLines(List<String> input, int lineLength) {
+        List<String> lines = new ArrayList<>();
+        StringBuilder currentLine = new StringBuilder();
+        for (String word : input) {
+            if (currentLine.length() + word.length() + 1 <= lineLength) {
+                if (currentLine.length() > 0) {
+                    currentLine.append(" ");
+                }
+                currentLine.append(word);
+            } else {
+                lines.add(currentLine.toString());
+                currentLine = new StringBuilder(word);
+            }
+        }
+        if (currentLine.length() > 0) {
+            lines.add(currentLine.toString());
+        }
+        return lines;
     }
 
     public void searchByGenre(Scanner scanner) {
-        System.out.println("Enter search term for writing genre: > ");
+        System.out.println("Enter search term for writing genre > ");
         String searchGenre = scanner.nextLine().toLowerCase();
 
-        //List<Laureate> matchingLaureates = data.searchLaureatesByGenre(searchGenre);
         System.out.println("------------------------------------------------------------------------------------------------------------------");
-        System.out.println("| Name                                   | Genres                                                       | Year   |");
+        System.out.printf("| %-38s | %-62s | %-4s |\n", "Name", "Genres", "Year");
         System.out.println("------------------------------------------------------------------------------------------------------------------");
 
-//        for (Laureate laureate : matchingLaureates) {
-//            System.out.println(laureate);
-//        }
+        for (LiteraturePrize prize : ReadInPrizes) {
+            for (Laureate laureate : prize.getWinners()) {
+                List<String> genres = laureate.getGenres();
+                if (genres != null) {
+                    for (String genre : genres) {
+                        if (genre.toLowerCase().contains(searchGenre)) {
+                            System.out.printf("| %-38s | %-62s | %-4s |\n", laureate.getName(), genre, prize.getYear());
+                            System.out.println("------------------------------------------------------------------------------------------------------------------");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public static boolean yearPatternCorrect(String year) {
