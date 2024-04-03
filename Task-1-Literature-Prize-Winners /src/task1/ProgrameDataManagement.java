@@ -263,27 +263,77 @@ public class ProgrameDataManagement {
         return lines;
     }
 
-    public void searchByGenre(Scanner scanner) {
-        System.out.println("Enter search term for writing genre > ");
-        String searchGenre = scanner.nextLine().toLowerCase();
+   public void searchByGenre(Scanner scanner) {
+        String[] allowedGenres = {"Poetry", "Essay", "History", "Law", "Novel", "Drama",
+            "Philology", "Short Story", "Biography", "Translation",
+            "Screenplay", "Memoir", "Philosophy", "Song Lyrics", "Autobiography"};
 
-        System.out.println("------------------------------------------------------------------------------------------------------------------");
-        System.out.printf("| %-38s | %-62s | %-4s |\n", "Name", "Genres", "Year");
-        System.out.println("------------------------------------------------------------------------------------------------------------------");
+        System.out.println("All Genres That Are Available:");
+        for (String genre : allowedGenres) {
+            System.out.println(genre);
+        }
+
+        String searchGenre;
+        boolean validInput = false;
+        do {
+            System.out.println("Enter search term for writing genre > ");
+            searchGenre = scanner.nextLine();
+            if (searchGenre.matches("[a-zA-Z]+")) {
+                validInput = true;
+            } else {
+                System.out.println("Invalid input. Please enter only characters.");
+            }
+        } while (!validInput);
+
+        List<String> DisplayGenre = new ArrayList<>();
+        boolean findGenre = false;
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-38s | %-70s | %-4s |\n", "Name", "Genres", "Year");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------");
 
         for (LiteraturePrize prize : ReadInPrizes) {
             for (Laureate laureate : prize.getWinners()) {
                 List<String> genres = laureate.getGenres();
                 if (genres != null) {
                     for (String genre : genres) {
-                        if (genre.toLowerCase().contains(searchGenre)) {
-                            System.out.printf("| %-38s | %-62s | %-4s |\n", laureate.getName(), genre, prize.getYear());
-                            System.out.println("------------------------------------------------------------------------------------------------------------------");
-                            break;
+                        if (genre.toLowerCase().contains(searchGenre.toLowerCase())) {
+                            // Capitalize the matched part of the genre
+                            genre = capitalizeMatchedPart(genre, searchGenre);
+                            DisplayGenre.add(genre);
+                            findGenre = true;
+                        } else {
+                            DisplayGenre.add(genre);
                         }
                     }
+                    if (findGenre) {
+                        System.out.printf("| %-38s | %-70s | %-4s |\n", laureate.getName(), String.join(", ", DisplayGenre), prize.getYear());
+                        System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                    }
+                    DisplayGenre.clear();
                 }
             }
+        }
+    
+     if (!findGenre) {
+            System.out.println("No matching genre found.");
+        }
+    }
+
+    // Helper method to capitalize the matched part of the genre
+    private String capitalizeMatchedPart(String genre, String searchGenre) {
+        int index = genre.toLowerCase().indexOf(searchGenre.toLowerCase());
+        String matchedPart = genre.substring(index, index + searchGenre.length());
+        return genre.replaceFirst(matchedPart, matchedPart.toUpperCase());
+    }
+
+    public void printAllowedGenres() {
+        String[] allowedGenres = {"Poetry", "Essay", "History", "Law", "Novel", "Drama",
+            "Philology", "Short Story", "Biography", "Translation",
+            "Screenplay", "Memoir", "Philosophy", "Song Lyrics", "Autobiography"};
+
+        System.out.println("Allowed Genres:");
+        for (String genre : allowedGenres) {
+            System.out.println(genre);
         }
     }
 
