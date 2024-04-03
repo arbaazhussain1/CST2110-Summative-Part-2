@@ -1,32 +1,41 @@
-    package task1;
+package task1;
 
-    import java.util.ArrayList;
-    import java.util.List;
-    import task1.Laureate;
+// Import necessary Java classes and the custom Laureate class from the same package
+import java.util.ArrayList;
+import java.util.List;
+import task1.Laureate;
 
-    public class LiteraturePrize {
+// Class representing a Literature Prize
+public class LiteraturePrize {
 
-        private String year;
+    // Field to store the year of the prize
+    private String year;
 
-        private List<Laureate> winners;
+    // List to store the winners of the prize
+    private List<Laureate> winners;
 
-        public LiteraturePrize(String year) {
-            this.year = year;
-            this.winners = new ArrayList<>();
-        }
+    // Constructor to initialize the LiteraturePrize object with the provided year
+    public LiteraturePrize(String year) {
+        this.year = year;
+        this.winners = new ArrayList<>();
+    }
 
-        public String getYear() {
-            return year;
-        }
+    // Getter method to retrieve the year of the prize
+    public String getYear() {
+        return year;
+    }
 
-        public List<Laureate> getWinners() {
-            return winners;
-        }
+    // Getter method to retrieve the list of winners of the prize
+    public List<Laureate> getWinners() {
+        return winners;
+    }
 
-        public void setWinners(Laureate winners) {
-            this.winners.add(winners);
-        }
+    // Method to add a winner to the list of winners
+    public void setWinners(Laureate winners) {
+        this.winners.add(winners);
+    }
 
+    // Override toString method to provide a string representation of the LiteraturePrize object
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -37,6 +46,4 @@
         return sb.toString();
     }
 
-
-
-    }
+}
