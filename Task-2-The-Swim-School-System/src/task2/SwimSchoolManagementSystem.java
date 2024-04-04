@@ -15,7 +15,6 @@ public class SwimSchoolManagementSystem {
         instructors = new ArrayList<>();
         lessons = new ArrayList<>();
         waitingList = new WaitingList();
-//        addDummyData(); // Pre-load dummy data
 
     }
 }

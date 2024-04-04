@@ -9,7 +9,6 @@ public class ProgrameDataManagement {
         Scanner scanner = new Scanner(System.in);
         int choice;
         do {
-
             System.out.println("----------------------------------------");
             System.out.println("Swim School Management System");
             System.out.println("----------------------------------------");
@@ -22,8 +21,9 @@ public class ProgrameDataManagement {
             System.out.println("7. Exit");
             System.out.println("----------------------------------------");
             System.out.print("Enter your choice: ");
-            try {
-                choice = Integer.parseInt(scanner.nextLine());
+            String input = scanner.nextLine().trim(); // Trim the input to remove leading and trailing spaces
+            if (input.matches("\\d+")) { // Check if the input contains only digits
+                choice = Integer.parseInt(input);
                 switch (choice) {
                     case 1:
                         viewStudentInformation();
@@ -49,7 +49,7 @@ public class ProgrameDataManagement {
                     default:
                         System.out.println("Invalid choice. Please enter a number between 1 and 7.");
                 }
-            } catch (NumberFormatException e) {
+            } else {
                 System.out.println("Invalid input. Please enter a number.");
                 choice = -1;
             }
