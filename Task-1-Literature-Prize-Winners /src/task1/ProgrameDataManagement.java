@@ -314,55 +314,70 @@ public class ProgrameDataManagement {
      * @param scanner Scanner object for user input
      */
     public void searchByGenre(Scanner scanner) {
+        // Define an array of allowed genres
         String[] allowedGenres = {"Poetry", "Essay", "History", "Law", "Novel", "Drama",
             "Philology", "Short Story", "Biography", "Translation",
-            "Screenplay", "Memoir", "Philosophy", "Song Lyrics", "Autobiography"}; // Define an array of allowed genres
+            "Screenplay", "Memoir", "Philosophy", "Song Lyrics", "Autobiography"};
 
         // Display available genres to the user
         System.out.println("All Genres That Are Available:");
-        for (String genre : allowedGenres) { // Iterate through each allowed genre
-            System.out.println(genre); // Print the genre
+        for (String genre : allowedGenres) {
+            System.out.println(genre);
         }
 
-        String searchGenre;  // Declare a variable to store the user's search term
-        boolean validInput = false; // Initialize a flag to track valid input
+        String searchGenre;
+        boolean validInput = false;
         // Prompt user to enter the genre to search for
         do {
             System.out.println("Enter search term for writing genre > ");
             searchGenre = scanner.nextLine();  // Get user input
-            if (searchGenre.matches("[a-zA-Z]+")) { // Check if the input contains only letters
+            if (searchGenre.matches("[a-zA-Z\\s]+")) { // Check if the input contains only letters and spaces
                 validInput = true; // Set the flag to true if the input is valid
             } else {
-                System.out.println("Invalid input. Please enter only characters."); // Display an error message for invalid input
+                System.out.println("Invalid input. Please enter only characters and spaces.");
             }
         } while (!validInput); // Continue prompting until valid input is provided
 
-        // Declare the final search term for use in lambda expression
-        final String finalSearchGenre = searchGenre;
+        // Split the search term into individual words
+        String searchWord = searchGenre;
 
-        List<String> displayGenres = new ArrayList<>(); // Initialize a list to hold the genres to be displayed
-        boolean findGenre = false; // Initialize a flag to track if a matching genre is found
-        // Print header and column labels for displaying search results
+        // Print header for displaying search results
         System.out.println("--------------------------------------------------------------------------------------------------------------------------");
         System.out.printf("| %-38s | %-70s | %-4s |\n", "Name", "Genres", "Year");
         System.out.println("--------------------------------------------------------------------------------------------------------------------------");
 
-        for (LiteraturePrize prize : ReadInPrizes) {  // Iterate through each literature prize
-            for (Laureate laureate : prize.getWinners()) { // Iterate through each winner of the current prize
-                List<String> genres = laureate.getGenres(); // Get the list of genres associated with the winner
-                if (genres != null && genres.stream().anyMatch(genre -> genre.toLowerCase().contains(finalSearchGenre.toLowerCase()))) { // Check if genres exist for the winner and if any genre contains the search term
-                    for (String genre : genres) { // Iterate through each genre
-                        // Capitalize the matched part of the genre
-                        if (genre.toLowerCase().contains(finalSearchGenre.toLowerCase())) {
-                            genre = capitalizeMatchedPart(genre, finalSearchGenre);
+        boolean findGenre = false;
+
+        // Iterate through literature prizes and laureates
+        for (LiteraturePrize prize : ReadInPrizes) {
+            for (Laureate laureate : prize.getWinners()) {
+                // Retrieve the list of genres associated with the current laureate
+                List<String> genres = laureate.getGenres();
+                // Check if genres exist for the current laureate
+                if (genres != null) {
+                    // Initialize a list to hold genres to be displayed for the current laureate
+                    List<String> displayGenres = new ArrayList<>();
+                    // Initialize a flag to track if a matching genre is found for the current laureate
+                    boolean foundGenre = false;
+                    // Iterate through each genre in the laureate's list of genres
+                    for (String genre : genres) {
+                        // Check if the genre contains the search term (case-insensitive)
+                        if (containsIgnoreCase(genre, searchWord)) {
+                            // Capitalize the matched part of the genre
+                            genre = capitalizeMatchedPart(genre, searchWord);
+                            // Set the flag to true since a matching genre is found
+                            foundGenre = true;
                         }
-                        displayGenres.add(genre); // Add the genre to the list of genres to be displayed
+                        // Add the genre to the list of genres to be displayed
+                        displayGenres.add(genre);
                     }
-                    // Print the laureate's information along with the genres and the prize year
-                    System.out.printf("| %-38s | %-70s | %-4s |\n", laureate.getName(), String.join(", ", displayGenres), prize.getYear());
-                    System.out.println("--------------------------------------------------------------------------------------------------------------------------");
-                    displayGenres.clear(); // Clear the list of genres to prepare for the next iteration
-                    findGenre = true; // Set the flag to true since a matching genre is found
+                    // If a matching genre is found for the current laureate
+                    if (foundGenre) {
+                        // Display the laureate's information if the genre is found
+                        displayResult(laureate.getName(), String.join(", ", displayGenres), prize.getYear());
+                        // Set the flag to true indicating that at least one laureate has a matching genre
+                        findGenre = true;
+                    }
                 }
             }
         }
@@ -373,22 +388,53 @@ public class ProgrameDataManagement {
         }
     }
 
-    // Helper method to capitalize the matched part of the genre
+    /**
+     * Checks if a string contains another string (case-insensitive).
+     *
+     * @param str The string to check
+     * @param searchStr The string to search for
+     * @return true if str contains searchStr, false otherwise
+     */
+    private boolean containsIgnoreCase(String str, String searchStr) {
+        return str.toLowerCase().contains(searchStr.toLowerCase());
+    }
+
+    /**
+     * Capitalizes the matched part of the genre.
+     *
+     * @param genre The genre string
+     * @param searchGenre The search term
+     * @return The genre string with the matched part capitalized
+     */
     private String capitalizeMatchedPart(String genre, String searchGenre) {
-        int index = genre.toLowerCase().indexOf(searchGenre.toLowerCase());  // Find the index of the matched part
+        int index = genre.toLowerCase().indexOf(searchGenre.toLowerCase()); // Find the index of the matched part
         String matchedPart = genre.substring(index, index + searchGenre.length()); // Extract the matched part of the genre
         return genre.replaceFirst(matchedPart, matchedPart.toUpperCase()); // Capitalize the matched part and return the modified genre
+    }
+
+    /**
+     * Displays the result.
+     *
+     * @param name The laureate's name
+     * @param genres The genres associated with the laureate
+     * @param year The year of the prize
+     */
+    private void displayResult(String name, String genres, String year) {
+        // Print laureate's name, genres, and year of the prize
+        System.out.printf("| %-38s | %-70s | %-4s |\n", name, genres, year);
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------");
     }
 
     /**
      * Prints the allowed genres.
      */
     public void printAllowedGenres() {
+        // Define an array of allowed genres
         String[] allowedGenres = {"Poetry", "Essay", "History", "Law", "Novel", "Drama",
             "Philology", "Short Story", "Biography", "Translation",
             "Screenplay", "Memoir", "Philosophy", "Song Lyrics", "Autobiography"};
 
-        // Display the allowed genres to the user
+        // Print the allowed genres
         System.out.println("Allowed Genres:");
         for (String genre : allowedGenres) {
             System.out.println(genre);
