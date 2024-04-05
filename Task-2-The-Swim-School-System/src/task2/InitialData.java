@@ -1,9 +1,14 @@
 package task2;
 
-public class StudentData {
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class InitialData {
 
 // Method to populate student data
-    public static void populateStudentData() {
+    // Method to populate and return student data sorted alphabetically by name
+    public static List<SwimStudent> populateStudentData() {
         // Create a new instance of StudentList
         StudentList studentList = new StudentList();
 
@@ -43,10 +48,19 @@ public class StudentData {
         studentList.addStudent(new SwimStudent("Matthew", SwimLevel.ADVANCED));
         studentList.addStudent(new SwimStudent("Madison", SwimLevel.ADVANCED));
 
-        // Display the list of students
+        // Get the list of students
+        List<SwimStudent> students = studentList.getAllStudents();
+
+        // Sort the list of students alphabetically by name
+        Collections.sort(students, Comparator.comparing(SwimStudent::getName));
+
+        // Display the list of students with their levels
         System.out.println("List of Students:");
         for (SwimStudent student : studentList.getAllStudents()) {
             System.out.println("Name: " + student.getName() + ", Level: " + student.getLevel());
         }
+
+        // Return the sorted list of students
+        return students;
     }
 }
