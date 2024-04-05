@@ -59,50 +59,52 @@ public class ProgrameDataManagement {
         } while (choice != 7);
     }
 
-public void viewStudentInformation() {
- Scanner scanner = new Scanner(System.in);
-    StudentList studentList = new StudentList();
-    List<SwimStudent> students = studentList.getAllStudents();
+    public void viewStudentInformation() {
+        Scanner scanner = new Scanner(System.in);
+        StudentList studentList = new StudentList();
 
-    // Populate student data
-    InitialData.populateStudentData(); // Call the method to populate student data
-    
-    // Sort the list of students alphabetically by name
-    Collections.sort(students, Comparator.comparing(SwimStudent::getName));
+        // Populate student data
+        InitialData.populateStudentData(); // Call the method to populate student data
 
-    // Display the sorted list of students
-    System.out.println("List of Students (sorted alphabetically by name):");
-    for (int i = 0; i < students.size(); i++) {
-        System.out.println((i + 1) + ". " + students.get(i).getName());
-    }
+        // Retrieve the list of students after population
+        List<SwimStudent> students = InitialData.getSwimStudents();
 
-    // Prompt the user to select a student by entering the student's name
-    System.out.print("Enter the student's name: ");
-    String inputName = scanner.nextLine();
+        // Sort the list of students alphabetically by name
+        Collections.sort(students, Comparator.comparing(SwimStudent::getName));
 
-    // Find the selected student by name
-    SwimStudent selectedStudent = null;
-    for (SwimStudent student : students) {
-        if (student.getName().equalsIgnoreCase(inputName)) {
-            selectedStudent = student;
-            break;
+        // Display the sorted list of students
+        System.out.println("List of Students (Sorted Alphabetically by Name):");
+        for (int i = 0; i < students.size(); i++) {
+            System.out.println((i + 1) + ". " + students.get(i).getName());
+        }
+
+        // Prompt the user to select a student by entering the student's name
+        System.out.print("Enter the student's name: ");
+        String inputName = scanner.nextLine().trim();
+
+        System.out.println(students);
+        // Find the selected student by name
+        SwimStudent selectedStudent = null;
+        for (SwimStudent student : students) {
+            if (student.getName().equalsIgnoreCase(inputName)) {
+                selectedStudent = student;
+                break;
+            }
+        }
+
+        // Display student information if found, otherwise, print an error message
+        if (selectedStudent != null) {
+            System.out.println("----------------------------------------");
+            System.out.println("Student Information:");
+            System.out.println("----------------------------------------");
+            System.out.println("Name: " + selectedStudent.getName());
+            System.out.println("Level: " + selectedStudent.getLevel()); // Print the student's level
+
+            // Add code to display other information of the selected student
+        } else {
+            System.out.println("Student with the name '" + inputName + "' not found.");
         }
     }
-
-    // Display student information if found, otherwise, print an error message
-    if (selectedStudent != null) {
-        System.out.println("Student Information:");
-        System.out.println("Name: " + selectedStudent.getName());
-        // Add code to display other information of the selected student
-    } else {
-        System.out.println("Student with the name '" + inputName + "' not found.");
-    }
-
-
-}
-
-
-    
 
     public void viewLessonDetails() {
         // Implementation for use case 2
@@ -128,7 +130,7 @@ public void viewStudentInformation() {
         // Check if qualification leads to level upgrade and manage waiting list
     }
 
-    public void moveStudentFromWaitingList() {
+    void moveStudentFromWaitingList() {
         // Implementation for use case 6
         // Allow user to move a swim student from waiting list to a class
         // Manage class allocation and waiting list

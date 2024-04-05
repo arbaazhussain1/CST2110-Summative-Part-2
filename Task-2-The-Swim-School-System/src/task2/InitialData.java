@@ -1,13 +1,17 @@
 package task2;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class InitialData {
 
+    // Create a new list to hold the swim students
+    private static List<SwimStudent> swimStudents = new ArrayList<>();
 // Method to populate student data
     // Method to populate and return student data sorted alphabetically by name
+
     public static List<SwimStudent> populateStudentData() {
         // Create a new instance of StudentList
         StudentList studentList = new StudentList();
@@ -60,7 +64,15 @@ public class InitialData {
             System.out.println("Name: " + student.getName() + ", Level: " + student.getLevel());
         }
 
+        // Assign the sorted list of students to swimStudents
+        swimStudents = students;
+
         // Return the sorted list of students
         return students;
+    }
+    // Getter for swimStudents
+
+    public static List<SwimStudent> getSwimStudents() {
+        return swimStudents;
     }
 }
