@@ -60,51 +60,72 @@ public class ProgrameDataManagement {
     }
 
     public void viewStudentInformation() {
-        Scanner scanner = new Scanner(System.in);
-        StudentList studentList = new StudentList();
+    Scanner scanner = new Scanner(System.in);
+    StudentList studentList = new StudentList();
 
-        // Populate student data
-        InitialData.populateStudentData(); // Call the method to populate student data
+    // Populate student data
+    InitialData.populateStudentData(); // Call the method to populate student data
 
-        // Retrieve the list of students after population
-        List<SwimStudent> students = InitialData.getSwimStudents();
+    // Retrieve the list of students after population
+    List<SwimStudent> students = InitialData.getSwimStudents();
 
-        // Sort the list of students alphabetically by name
-        Collections.sort(students, Comparator.comparing(SwimStudent::getName));
+    // Retrieve the list of lessons
+    List<SwimLesson> lessons = InitialData.createSwimLessons();
 
-        // Display the sorted list of students
-        System.out.println("List of Students (Sorted Alphabetically by Name):");
-        for (int i = 0; i < students.size(); i++) {
-            System.out.println((i + 1) + ". " + students.get(i).getName());
-        }
+    // Sort the list of students alphabetically by name
+    Collections.sort(students, Comparator.comparing(SwimStudent::getName));
 
-        // Prompt the user to select a student by entering the student's name
-        System.out.print("Enter the student's name: ");
-        String inputName = scanner.nextLine().trim();
+    // Display the sorted list of students
+    System.out.print("Enter the student's name: ");
+    String inputName = scanner.nextLine().trim();
 
-        System.out.println(students);
-        // Find the selected student by name
-        SwimStudent selectedStudent = null;
-        for (SwimStudent student : students) {
-            if (student.getName().equalsIgnoreCase(inputName)) {
-                selectedStudent = student;
-                break;
-            }
-        }
-
-        // Display student information if found, otherwise, print an error message
-        if (selectedStudent != null) {
-            System.out.println("----------------------------------------");
-            System.out.println("Student Information:");
-            System.out.println("----------------------------------------");
-            System.out.println("Name: " + selectedStudent.getName());
-            System.out.println("Level: " + selectedStudent.getLevel()); // Print the student's level
-
-            // Add code to display other information of the selected student
-        } else {
-            System.out.println("Student with the name '" + inputName + "' not found.");
+    // Find the selected student by name
+    SwimStudent selectedStudent = null;
+    for (SwimStudent student : students) {
+        if (student.getName().equalsIgnoreCase(inputName)) {
+            selectedStudent = student;
+            break;
         }
     }
+
+    // Find the selected lesson containing the student by name
+    SwimLesson selectedLesson = null;
+    for (SwimLesson lesson : lessons) {
+        if (lesson.getStudents().contains(selectedStudent)) {
+            selectedLesson = lesson;
+            break;
+        }
+    }
+
+    // Display student information if found, otherwise, print an error message
+    if (selectedStudent != null) {
+        System.out.println("----------------------------------------");
+        System.out.println("Student Information:");
+        System.out.println("----------------------------------------");
+        System.out.println("Name: " + selectedStudent.getName());
+        System.out.println("Level: " + selectedStudent.getLevel()); // Print the student's level
+
+        // Check if the student is enrolled in any lesson
+        if (selectedLesson != null) {
+            // Check if the lesson has an instructor assigned
+            Instructor instructor = selectedLesson.getInstructor();
+            if (instructor != null) {
+                System.out.println("Lesson Day: " + selectedLesson.getDayOfWeek());
+                System.out.println("Start Time: " + selectedLesson.getStartTime());
+                System.out.println("Instructor: " + instructor.getName());
+            } else {
+                System.out.println("Lesson information not available: No instructor assigned.");
+            }
+        } else {
+            System.out.println("The student is not enrolled in any lesson.");
+        }
+        System.out.println("----------------------------------------");
+
+        // Add code to display other information of the selected student
+    } else {
+        System.out.println("Student with the name '" + inputName + "' not found.");
+    }
+}
 
     public void viewLessonDetails() {
         // Implementation for use case 2

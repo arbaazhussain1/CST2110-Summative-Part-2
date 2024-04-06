@@ -21,6 +21,17 @@ public class StudentList {
     public List<SwimStudent> getAllStudents() {
         return students;
     }
+    
+    
+     // Method to find a student by name
+    public SwimStudent findStudentByName(String name) {
+        for (SwimStudent student : students) {
+            if (student.getName().equalsIgnoreCase(name)) {
+                return student; // Found the student, return it
+            }
+        }
+        return null; // Student not found
+    }
 
     // You can add more methods as per your requirements, such as finding a student by name, etc.
 }

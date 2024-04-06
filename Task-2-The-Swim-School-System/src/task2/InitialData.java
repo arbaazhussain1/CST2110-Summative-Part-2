@@ -1,6 +1,7 @@
 package task2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -59,11 +60,14 @@ public class InitialData {
         Collections.sort(students, Comparator.comparing(SwimStudent::getName));
 
         // Display the list of students with their levels
+//        System.out.println("List of Students:");
+//        for (SwimStudent student : studentList.getAllStudents()) {
+//            System.out.println("Name: " + student.getName() + ", Level: " + student.getLevel());
+//        }
         System.out.println("List of Students:");
         for (SwimStudent student : studentList.getAllStudents()) {
-            System.out.println("Name: " + student.getName() + ", Level: " + student.getLevel());
+            System.out.println("Name: " + student.getName());
         }
-
         // Assign the sorted list of students to swimStudents
         swimStudents = students;
 
@@ -75,4 +79,40 @@ public class InitialData {
     public static List<SwimStudent> getSwimStudents() {
         return swimStudents;
     }
+
+    public static List<SwimLesson> createSwimLessons() {
+        // Create a lesson list instance
+        LessonList lessonList = new LessonList();
+
+        // Create sample instructors
+        Instructor instructor1 = new Instructor("John Doe");
+        Instructor instructor2 = new Instructor("Jane Smith");
+        Instructor instructor3 = new Instructor("Alex Smith");
+
+        // Create sample students
+        SwimStudent alice = new SwimStudent("Alice", SwimLevel.NOVICE);
+        SwimStudent sam = new SwimStudent("Sam", SwimLevel.NOVICE);
+
+        SwimStudent bob = new SwimStudent("Bob", SwimLevel.IMPROVER);
+        SwimStudent charlie = new SwimStudent("Charlie", SwimLevel.ADVANCED);
+
+        // Create sample swim lessons
+        SwimLesson lesson1 = new SwimLesson("Monday", "17:00", SwimLevel.NOVICE, instructor1);
+        SwimLesson lesson2 = new SwimLesson("Wednesday", "18:00", SwimLevel.IMPROVER, instructor2);
+        SwimLesson lesson3 = new SwimLesson("Friday", "19:00", SwimLevel.ADVANCED, instructor3);
+
+//        public SwimLesson(String dayOfWeek, String startTime, SwimLevel level, Instructor instructor) {
+        // Add students to lessons
+        lesson1.addStudents(Arrays.asList(alice, sam));
+        lesson2.addStudents(Arrays.asList(bob));
+        lesson3.addStudents(Arrays.asList(charlie));
+        // Add lessons to the lesson list
+        lessonList.addLesson(lesson1);
+        lessonList.addLesson(lesson2);
+        lessonList.addLesson(lesson3);
+
+        // Return the list of swim lessons
+        return lessonList.getLessons();
+    }
+
 }
