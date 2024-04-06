@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InitialData {
 
@@ -63,13 +65,37 @@ public class InitialData {
 //        for (SwimStudent student : studentList.getAllStudents()) {
 //            System.out.println("Name: " + student.getName() + ", Level: " + student.getLevel());
 //        }
-        System.out.println("List of Students:");
-        for (SwimStudent student : studentList.getAllStudents()) {
-            System.out.println("Name: " + student.getName());
-        }
+System.out.println("|----------------------------------------------|");
+System.out.println("|               List of Students:              |");
+System.out.println("|----------------------------------------------|");
+System.out.println("|               Name             |    Level    |");
+System.out.println("|----------------------------------------------|");
+for (SwimStudent student : studentList.getAllStudents()) {
+    System.out.printf("| %-30s | %-11s |\n", student.getName(), student.getLevel());
+}
+System.out.println("|----------------------------------------------| \n");
+
+
         // Assign the sorted list of students to swimStudents
         swimStudents = students;
 
+        // Check if novice students are on the waiting list and display relevant information
+        System.out.println("Novice Students on Waiting List:");
+        for (SwimStudent student : studentList.getWaitingList()) {
+            if (student.getLevel() == SwimLevel.NOVICE) {
+                System.out.println("Name: " + student.getName());
+                System.out.println("Qualifications:");
+                for (Qualification qualification : student.getQualifications()) {
+                    System.out.println("- " + qualification.getName() + " (Awarded by: " + qualification.getInstructor().getName() + ")");
+                }
+                if (!student.getDistanceSwimQualifications().isEmpty()) {
+                    System.out.println("Distance Swim Qualifications:");
+                    for (Qualification qualification : student.getDistanceSwimQualifications()) {
+                        System.out.println("- " + qualification.getName() + " (Awarded by: " + qualification.getInstructor().getName() + ")");
+                    }
+                }
+            }
+        }
         // Return the sorted list of students
         return students;
     }
@@ -80,50 +106,146 @@ public class InitialData {
     }
 
     public static List<SwimLesson> createSwimLessons() {
-    // Create a lesson list instance
-    LessonList lessonList = new LessonList();
+        // Create a lesson list instance
+        LessonList lessonList = new LessonList();
 
-    // Create sample instructors
-    Instructor instructor1 = new Instructor("John Doe");
-    Instructor instructor2 = new Instructor("Jane Smith");
-    Instructor instructor3 = new Instructor("Alex Smith");
+        // Create sample instructors
+        Instructor instructor1 = new Instructor("John Doe");
+        Instructor instructor2 = new Instructor("Jane Smith");
+        Instructor instructor3 = new Instructor("Jin Smith");
 
-    // Retrieve the list of students
-    List<SwimStudent> students = getSwimStudents();
+        // Retrieve the list of students
+        List<SwimStudent> students = getSwimStudents();
 
-    // Find the students by name
-    SwimStudent aliceSmith = null;
-    SwimStudent bobJohnson = null;
-    SwimStudent michaelKing = null;
-    for (SwimStudent student : students) {
-        if (student.getName().equals("Alice Smith")) {
-            aliceSmith = student;
-        } else if (student.getName().equals("Bob Johnson")) {
-            bobJohnson = student;
-        } else if (student.getName().equals("Michael King")) {
-            michaelKing = student;
-        }
-    }
+        // Find the students by name
+//        SwimStudent aliceSmith = null;
+//        SwimStudent bobJohnson = null;
+//        SwimStudent michaelKing = null;
+//        for (SwimStudent student : students) {
+//            if (student.getName().equals("Alice Smith")) {
+//                aliceSmith = student;
+//            } else if (student.getName().equals("Bob Johnson")) {
+//                bobJohnson = student;
+//            } else if (student.getName().equals("Michael King")) {
+//                michaelKing = student;
+//            }
+//        }
 
-    // Create sample swim lessons
-    SwimLesson lessonNovice = new SwimLesson("Monday", "17:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
-    SwimLesson lessonImprover = new SwimLesson("Monday", "17:00", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
-    SwimLesson lessonAdvanced = new SwimLesson("Monday", "17:00", SwimLevel.ADVANCED, instructor3, 30); // Duration: 30 minutes
+List<String> targetNames = Arrays.asList(
+    "Alice Smith", "Bob Johnson", "Charlie Brown", "David Wilson", "Emma Davis",
+    "Frank Miller", "Grace Martinez", "Henry Taylor", "Isabella Clark", "Jack Thomas",
+    "Liam Anderson", "Olivia White", "Noah Harris", "Ava Martin", "William Thompson",
+    "Sophia Garcia", "James Martinez", "Charlotte Robinson", "Benjamin Lee", "Mia Scott",
+    "Michael King", "Emily Green", "Alexander Evans", "Abigail Hughes", "Ethan Wright",
+    "Evelyn Baker", "Daniel Hill", "Samantha Rivera", "Matthew Cooper", "Madison Long"
+);
 
-    // Add students to lessons
-    lessonNovice.addStudents(Arrays.asList(aliceSmith));
-    lessonImprover.addStudents(Arrays.asList(bobJohnson));
-    lessonAdvanced.addStudents(Arrays.asList(michaelKing));
-
-    // Add lessons to the lesson list
-    lessonList.addLesson(lessonNovice);
-    lessonList.addLesson(lessonImprover);
-    lessonList.addLesson(lessonAdvanced);
-
-    // Return the list of swim lessons
-    return lessonList.getLessons();
+Map<String, SwimStudent> studentsByName = new HashMap<>();
+for (SwimStudent student : students) {
+    studentsByName.put(student.getName(), student);
 }
 
+Map<String, SwimStudent> foundStudents = new HashMap<>();
+for (String name : targetNames) {
+    SwimStudent student = studentsByName.get(name);
+    if (student != null) {
+        foundStudents.put(name, student);
+    }
+}
 
+        // Create lessons
+        // Novice
+        SwimLesson lessonNoviceMonday1 = new SwimLesson("Monday", "17:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceMonday2 = new SwimLesson("Monday", "17:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceMonday3 = new SwimLesson("Monday", "18:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceMonday4 = new SwimLesson("Monday", "18:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceMonday5 = new SwimLesson("Monday", "19:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceMonday6 = new SwimLesson("Monday", "19:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceMonday7 = new SwimLesson("Monday", "20:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+
+        SwimLesson lessonNoviceWednesday1 = new SwimLesson("Wednesday", "17:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceWednesday2 = new SwimLesson("Wednesday", "17:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceWednesday3 = new SwimLesson("Wednesday", "18:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceWednesday4 = new SwimLesson("Wednesday", "18:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceWednesday5 = new SwimLesson("Wednesday", "19:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceWednesday6 = new SwimLesson("Wednesday", "19:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceWednesday7 = new SwimLesson("Wednesday", "20:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+
+        SwimLesson lessonNoviceFriday1 = new SwimLesson("Friday", "17:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceFriday2 = new SwimLesson("Friday", "17:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceFriday3 = new SwimLesson("Friday", "18:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceFriday4 = new SwimLesson("Friday", "18:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceFriday5 = new SwimLesson("Friday", "19:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceFriday6 = new SwimLesson("Friday", "19:30", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonNoviceFriday7 = new SwimLesson("Friday", "20:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+
+        // Improver
+        SwimLesson lessonImproverMonday1 = new SwimLesson("Monday", "17:00", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverMonday2 = new SwimLesson("Monday", "17:30", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverMonday3 = new SwimLesson("Monday", "18:00", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverMonday4 = new SwimLesson("Monday", "18:30", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverMonday5 = new SwimLesson("Monday", "19:00", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverMonday6 = new SwimLesson("Monday", "19:30", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverMonday7 = new SwimLesson("Monday", "20:00", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
+
+        SwimLesson lessonImproverWednesday1 = new SwimLesson("Wednesday", "17:00", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverWednesday2 = new SwimLesson("Wednesday", "17:30", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverWednesday3 = new SwimLesson("Wednesday", "18:00", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverWednesday4 = new SwimLesson("Wednesday", "18:30", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverWednesday5 = new SwimLesson("Wednesday", "19:00", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverWednesday6 = new SwimLesson("Wednesday", "19:30", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverWednesday7 = new SwimLesson("Wednesday", "20:00", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+
+        SwimLesson lessonImproverFriday1 = new SwimLesson("Friday", "17:00", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverFriday2 = new SwimLesson("Friday", "17:30", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverFriday3 = new SwimLesson("Friday", "18:00", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverFriday4 = new SwimLesson("Friday", "18:30", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverFriday5 = new SwimLesson("Friday", "19:00", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverFriday6 = new SwimLesson("Friday", "19:30", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonImproverFriday7 = new SwimLesson("Friday", "20:00", SwimLevel.IMPROVER, instructor1, 30); // Duration: 30 minutes
+
+        //Advanced
+        SwimLesson lessonAdvancedMonday1 = new SwimLesson("Monday", "17:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedMonday2 = new SwimLesson("Monday", "17:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedMonday3 = new SwimLesson("Monday", "18:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedMonday4 = new SwimLesson("Monday", "18:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedMonday5 = new SwimLesson("Monday", "19:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedMonday6 = new SwimLesson("Monday", "19:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedMonday7 = new SwimLesson("Monday", "20:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+
+        SwimLesson lessonAdvancedWednesday1 = new SwimLesson("Wednesday", "17:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedWednesday2 = new SwimLesson("Wednesday", "17:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedWednesday3 = new SwimLesson("Wednesday", "18:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedWednesday4 = new SwimLesson("Wednesday", "18:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedWednesday5 = new SwimLesson("Wednesday", "19:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedWednesday6 = new SwimLesson("Wednesday", "19:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedWednesday7 = new SwimLesson("Wednesday", "20:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+
+        SwimLesson lessonAdvancedFriday1 = new SwimLesson("Friday", "17:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedFriday2 = new SwimLesson("Friday", "17:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedFriday3 = new SwimLesson("Friday", "18:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedFriday4 = new SwimLesson("Friday", "18:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedFriday5 = new SwimLesson("Friday", "19:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedFriday6 = new SwimLesson("Friday", "19:30", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+        SwimLesson lessonAdvancedFriday7 = new SwimLesson("Friday", "20:00", SwimLevel.ADVANCED, instructor1, 30); // Duration: 30 minutes
+
+        // Add students to lessons
+//        lessonNoviceMonday1.addStudents(Arrays.asList(aliceSmith));
+//        lessonImproverMonday1.addStudents(Arrays.asList(bobJohnson));
+//        lessonAdvancedMonday1.addStudents(Arrays.asList(michaelKing));
+
+// Use the found students to add them to swim lessons
+lessonNoviceMonday1.addStudents(new ArrayList<>(foundStudents.values()));
+lessonImproverMonday1.addStudents(new ArrayList<>(foundStudents.values()));
+lessonAdvancedMonday1.addStudents(new ArrayList<>(foundStudents.values()));
+
+        // Add lessons to the lesson list
+        lessonList.addLesson(lessonNoviceMonday1);
+        lessonList.addLesson(lessonImproverMonday1);
+        lessonList.addLesson(lessonAdvancedMonday1);
+
+        // Return the list of swim lessons
+        return lessonList.getLessons();
+    }
 
 }

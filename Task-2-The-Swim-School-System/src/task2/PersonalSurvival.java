@@ -4,8 +4,8 @@ public class PersonalSurvival extends Qualification {
 
     private String survivalLevel;
 
-    public PersonalSurvival(SwimLevel level, String survivalLevel) {
-        super(level);
+    public PersonalSurvival(SwimLevel level, Instructor instructor, String survivalLevel) {
+        super(level, instructor);
         this.survivalLevel = survivalLevel;
     }
 

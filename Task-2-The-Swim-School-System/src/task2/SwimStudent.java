@@ -8,6 +8,8 @@ public class SwimStudent {
     private String name;
     private SwimLevel level;
     private List<Qualification> qualifications;
+    private List<Qualification> distanceSwimQualifications; // Add this line
+    private List<Qualification> personalSurvivalQualifications; // Add this line
 
     // Constructor
     public SwimStudent(String name, SwimLevel level) {
@@ -46,11 +48,20 @@ public class SwimStudent {
 
     // Method to get the day and time of the swim lesson
     public String getDayAndTime() {
-        // Add implementation to return the day and time of the swim lesson
-        // This method should return a String representing the day and time of the swim lesson,
-        // or an empty string if no lesson is associated with the student
-        return ""; // Placeholder, replace with actual implementation
+    SwimLesson lesson = getSwimLesson();
+        if (lesson != null) {
+            return lesson.getDayOfWeek() + ", " + lesson.getStartTime();
+        } else {
+            return ""; // No lesson associated
+        }
     }
     
+    public List<Qualification> getDistanceSwimQualifications() {
+        return distanceSwimQualifications;
+    }
+
+    public List<Qualification> getPersonalSurvivalQualifications() {
+        return personalSurvivalQualifications;
+    }
 
 }

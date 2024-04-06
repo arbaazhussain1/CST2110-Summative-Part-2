@@ -3,8 +3,8 @@ package task2;
 public class DistanceSwim extends Qualification {
     private int distance;
 
-    public DistanceSwim(SwimLevel level, int distance) {
-        super(level);
+    public DistanceSwim(SwimLevel level, Instructor instructor, int distance) {
+        super(level, instructor);
         this.distance = distance;
     }
 
