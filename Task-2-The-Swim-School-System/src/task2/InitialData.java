@@ -80,47 +80,50 @@ public class InitialData {
     }
 
     public static List<SwimLesson> createSwimLessons() {
-        // Create a lesson list instance
-        LessonList lessonList = new LessonList();
+    // Create a lesson list instance
+    LessonList lessonList = new LessonList();
 
-        // Create sample instructors
-        Instructor instructor1 = new Instructor("John Doe");
-        Instructor instructor2 = new Instructor("Jane Smith");
-        Instructor instructor3 = new Instructor("Alex Smith");
+    // Create sample instructors
+    Instructor instructor1 = new Instructor("John Doe");
+    Instructor instructor2 = new Instructor("Jane Smith");
+    Instructor instructor3 = new Instructor("Alex Smith");
 
-        // Retrieve the list of students
-        List<SwimStudent> students = getSwimStudents();
+    // Retrieve the list of students
+    List<SwimStudent> students = getSwimStudents();
 
-        // Find the students by name
-        SwimStudent aliceSmith = null;
-        SwimStudent bobJohnson = null;
-        SwimStudent michaelKing = null;
-        for (SwimStudent student : students) {
-            if (student.getName().equals("Alice Smith")) {
-                aliceSmith = student;
-            } else if (student.getName().equals("Bob Johnson")) {
-                bobJohnson = student;
-            } else if (student.getName().equals("Michael King")) {
-                michaelKing = student;
-            }
+    // Find the students by name
+    SwimStudent aliceSmith = null;
+    SwimStudent bobJohnson = null;
+    SwimStudent michaelKing = null;
+    for (SwimStudent student : students) {
+        if (student.getName().equals("Alice Smith")) {
+            aliceSmith = student;
+        } else if (student.getName().equals("Bob Johnson")) {
+            bobJohnson = student;
+        } else if (student.getName().equals("Michael King")) {
+            michaelKing = student;
         }
-
-        // Create sample swim lessons
-        SwimLesson lesson1 = new SwimLesson("Monday", "17:00", SwimLevel.NOVICE, instructor1);
-        SwimLesson lesson2 = new SwimLesson("Wednesday", "18:00", SwimLevel.IMPROVER, instructor2);
-        SwimLesson lesson3 = new SwimLesson("Friday", "19:00", SwimLevel.ADVANCED, instructor3);
-
-        // Add students to lessons
-        lesson1.addStudents(Arrays.asList(aliceSmith, bobJohnson));
-        lesson3.addStudents(Arrays.asList(michaelKing));
-
-        // Add lessons to the lesson list
-        lessonList.addLesson(lesson1);
-        lessonList.addLesson(lesson2);
-        lessonList.addLesson(lesson3);
-
-        // Return the list of swim lessons
-        return lessonList.getLessons();
     }
+
+    // Create sample swim lessons
+    SwimLesson lessonNovice = new SwimLesson("Monday", "17:00", SwimLevel.NOVICE, instructor1, 30); // Duration: 30 minutes
+    SwimLesson lessonImprover = new SwimLesson("Monday", "17:00", SwimLevel.IMPROVER, instructor2, 30); // Duration: 30 minutes
+    SwimLesson lessonAdvanced = new SwimLesson("Monday", "17:00", SwimLevel.ADVANCED, instructor3, 30); // Duration: 30 minutes
+
+    // Add students to lessons
+    lessonNovice.addStudents(Arrays.asList(aliceSmith));
+    lessonImprover.addStudents(Arrays.asList(bobJohnson));
+    lessonAdvanced.addStudents(Arrays.asList(michaelKing));
+
+    // Add lessons to the lesson list
+    lessonList.addLesson(lessonNovice);
+    lessonList.addLesson(lessonImprover);
+    lessonList.addLesson(lessonAdvanced);
+
+    // Return the list of swim lessons
+    return lessonList.getLessons();
+}
+
+
 
 }

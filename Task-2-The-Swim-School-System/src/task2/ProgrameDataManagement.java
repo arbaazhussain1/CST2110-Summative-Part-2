@@ -112,6 +112,7 @@ public class ProgrameDataManagement {
             if (instructor != null) {
                 System.out.println("Lesson Day: " + selectedLesson.getDayOfWeek());
                 System.out.println("Start Time: " + selectedLesson.getStartTime());
+                System.out.println("Duration: " + selectedLesson.getDuration() + " minutes");
                 System.out.println("Instructor: " + instructor.getName());
             } else {
                 System.out.println("Lesson information not available: No instructor assigned.");
