@@ -127,6 +127,8 @@ public class ProgrameDataManagement {
     }
 }
 
+
+
     public void viewLessonDetails() {
         // Implementation for use case 2
         // Prompt user to select the day, time, and level of the swim class
