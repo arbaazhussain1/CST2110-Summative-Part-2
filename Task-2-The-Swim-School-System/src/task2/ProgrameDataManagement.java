@@ -126,7 +126,7 @@ public class ProgrameDataManagement {
                     System.out.println("|------------------------------------------------------|");
                 }
             } else {
-                System.out.println("| The student is not enrolled in any lesson.          |");
+                System.out.println("| The student is not enrolled in any lesson.           |");
                 System.out.println("|------------------------------------------------------|");
             }
 

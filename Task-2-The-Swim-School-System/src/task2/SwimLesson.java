@@ -51,9 +51,9 @@ public class SwimLesson {
         for (SwimStudent student : students) {
             if (this.students.size() < 4) {
                 this.students.add(student);
-                System.out.println(student.getName() + " added to the lesson at " + startTime);
+//                System.out.println(student.getName() + " added to the lesson at " + startTime);
             } else {
-                System.out.println("Cannot add " + student.getName() + ". The lesson is already full.");
+//                System.out.println("Cannot add " + student.getName() + ". The lesson is already full.");
             }
         }
     }

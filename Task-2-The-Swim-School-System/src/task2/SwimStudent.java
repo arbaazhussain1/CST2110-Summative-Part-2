@@ -8,14 +8,17 @@ public class SwimStudent {
     private String name;
     private SwimLevel level;
     private List<Qualification> qualifications;
-    private List<Qualification> distanceSwimQualifications; // Add this line
-    private List<Qualification> personalSurvivalQualifications; // Add this line
+    private List<Qualification> distanceSwimQualifications;
+    private List<Qualification> personalSurvivalQualifications;
+    private SwimLesson swimClass; // Reference to the associated lesson
 
     // Constructor
     public SwimStudent(String name, SwimLevel level) {
         this.name = name;
         this.level = level;
         this.qualifications = new ArrayList<>();
+        this.distanceSwimQualifications = new ArrayList<>();
+        this.personalSurvivalQualifications = new ArrayList<>();
     }
     
     // Getters and setters
@@ -39,18 +42,20 @@ public class SwimStudent {
         qualifications.add(qualification);
     }
     
+    // Method to associate a lesson with the student
+    public void setSwimLesson(SwimLesson lesson) {
+        this.swimClass = lesson;
+    }
+
     // Method to get the swim lesson associated with the student
     public SwimLesson getSwimLesson() {
-        // Add implementation to return the swim lesson associated with the student
-        // This method should return the swim lesson object of the student, or null if none exists
-        return null; // Placeholder, replace with actual implementation
+        return swimClass;
     }
 
     // Method to get the day and time of the swim lesson
     public String getDayAndTime() {
-    SwimLesson lesson = getSwimLesson();
-        if (lesson != null) {
-            return lesson.getDayOfWeek() + ", " + lesson.getStartTime();
+        if (swimClass != null) {
+            return swimClass.getDayOfWeek() + ", " + swimClass.getStartTime();
         } else {
             return ""; // No lesson associated
         }
