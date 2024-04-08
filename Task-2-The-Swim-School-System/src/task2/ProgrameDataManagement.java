@@ -2,6 +2,7 @@ package task2;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class ProgrameDataManagement {
             System.out.println("|2. View swim lesson details             |");
             System.out.println("|3. View instructor schedule             |");
             System.out.println("|4. Add new swim student                 |");
-            System.out.println("|5. Award swim qualification .           |");
+            System.out.println("|5. Award swim qualification             |");
             System.out.println("|6. Move swim student from waiting list  |");
             System.out.println("|7. Exit                                 |");
             System.out.println("|----------------------------------------|\n");
@@ -159,9 +160,16 @@ public class ProgrameDataManagement {
             System.out.printf("| %d. %-35s |%n", (i + 1), daysOfWeek[i]);
         }
         System.out.println("------------------------------------------");
-        System.out.print("Enter the number of the day: ");
-        int selectedDayIndex = scanner.nextInt() - 1;
-        DayOfWeek selectedDay = daysOfWeek[selectedDayIndex];
+        int selectedDayIndex;
+        do {
+            System.out.print("Enter the number of the day: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Please enter a valid number.");
+                scanner.next();
+            }
+            selectedDayIndex = scanner.nextInt();
+        } while (selectedDayIndex < 1 || selectedDayIndex > daysOfWeek.length);
+        DayOfWeek selectedDay = daysOfWeek[selectedDayIndex - 1];
 
         // Prompt the user to select the time of the lesson
         System.out.println("------------------------------------------");
@@ -173,9 +181,16 @@ public class ProgrameDataManagement {
             System.out.printf("| %d. %-35s |%n", (i + 1), startTimes[i]);
         }
         System.out.println("------------------------------------------");
-        System.out.print("Enter the number of the time: ");
-        int selectedTimeIndex = scanner.nextInt() - 1;
-        LocalTime selectedTime = startTimes[selectedTimeIndex];
+        int selectedTimeIndex;
+        do {
+            System.out.print("Enter the number of the time: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Please enter a valid number.");
+                scanner.next();
+            }
+            selectedTimeIndex = scanner.nextInt();
+        } while (selectedTimeIndex < 1 || selectedTimeIndex > startTimes.length);
+        LocalTime selectedTime = startTimes[selectedTimeIndex - 1];
 
         // Prompt the user to select the level of the lesson
         System.out.println("------------------------------------------");
@@ -185,9 +200,16 @@ public class ProgrameDataManagement {
             System.out.printf("| %d. %-35s |%n", (i + 1), swimLevels[i]);
         }
         System.out.println("------------------------------------------");
-        System.out.print("Enter the number of the level: ");
-        int selectedLevelIndex = scanner.nextInt() - 1;
-        String selectedLevel = swimLevels[selectedLevelIndex];
+        int selectedLevelIndex;
+        do {
+            System.out.print("Enter the number of the level: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Please enter a valid number.");
+                scanner.next();
+            }
+            selectedLevelIndex = scanner.nextInt();
+        } while (selectedLevelIndex < 1 || selectedLevelIndex > swimLevels.length);
+        String selectedLevel = swimLevels[selectedLevelIndex - 1];
         SwimLevel level = SwimLevel.NOVICE;
 
         if (selectedLevel.equalsIgnoreCase("Novice")) {
@@ -226,6 +248,7 @@ public class ProgrameDataManagement {
         } else {
             System.out.println("|  No lesson found for the selected criteria.");
         }
+
     }
 
     public void viewInstructorSchedule() {
@@ -241,9 +264,9 @@ public class ProgrameDataManagement {
             System.out.printf("| %2d | %-32s |%n", (i + 1), sortedInstructors.get(i).getName());
         }
         System.out.println("------------------------------------------");
-        System.out.print("Enter the number of the instructor: ");
         int instructorIndex;
         do {
+            System.out.print("Enter the number of the instructor: ");
             while (!scanner.hasNextInt()) {
                 System.out.print("Invalid input. Please enter a number: ");
                 scanner.next();
@@ -313,10 +336,29 @@ public class ProgrameDataManagement {
         System.out.println("|----------------------------------------|");
         System.out.println("| Select a class (day and time)          |");
         System.out.println("------------------------------------------");
-        System.out.print("| Enter the day (e.g., MONDAY): ");
-        DayOfWeek selectedDay = DayOfWeek.valueOf(scanner.nextLine().trim().toUpperCase());
-        System.out.print("| Enter the time (e.g., 17:00): ");
-        LocalTime selectedTime = LocalTime.parse(scanner.nextLine().trim());
+        DayOfWeek selectedDay = null;
+        boolean validDayEntered = false;
+        while (!validDayEntered) {
+            try {
+                System.out.print("| Enter the day (e.g., MONDAY): ");
+                selectedDay = DayOfWeek.valueOf(scanner.nextLine().trim().toUpperCase());
+                validDayEntered = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid day. Please enter a valid day of the week (e.g., MONDAY).");
+            }
+        }
+        LocalTime selectedTime = null;
+        boolean validTimeEntered = false;
+        while (!validTimeEntered) {
+            System.out.print("| Enter the time (e.g., 17:00): ");
+            String inputTime = scanner.nextLine().trim();
+            try {
+                selectedTime = LocalTime.parse(inputTime);
+                validTimeEntered = true;
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time format. Please enter the time in HH:mm format (e.g., 17:00).");
+            }
+        }
 
         // Find the selected lesson
         SwimLesson selectedLesson = null;
@@ -349,7 +391,7 @@ public class ProgrameDataManagement {
 
         // Prompt user to select student
         System.out.println("|----------------------------------------|");
-        System.out.println("|           Award Swim Qualification      |");
+        System.out.println("|           Award Swim Qualification     |");
         System.out.println("|----------------------------------------|");
         System.out.println("Select a student:");
         List<SwimStudent> students = studentList.getAllSwimStudents();
@@ -359,7 +401,16 @@ public class ProgrameDataManagement {
             System.out.printf("| %2d | %-10s | %-20s |%n", (i + 1), students.get(i).getName(), students.get(i).getLevel());
         }
         System.out.println("|----------------------------------------|");
-        int studentIndex = scanner.nextInt() - 1;
+
+        int studentIndex;
+        do {
+            System.out.print("Enter the number of the student: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();
+            }
+            studentIndex = scanner.nextInt() - 1;
+        } while (studentIndex < 0 || studentIndex >= students.size());
         SwimStudent selectedStudent = students.get(studentIndex);
 
         // Prompt user to select instructor
@@ -378,8 +429,18 @@ public class ProgrameDataManagement {
             System.out.println("| " + (i + 1) + ". " + instructors.get(i).getName());
         }
         System.out.println(" ---------------------------------------|");
-        int instructorIndex = scanner.nextInt() - 1;
+
+        int instructorIndex;
+        do {
+            System.out.print("Enter the number of the instructor: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();
+            }
+            instructorIndex = scanner.nextInt() - 1;
+        } while (instructorIndex < 0 || instructorIndex >= instructors.size());
         Instructor selectedInstructor = instructors.get(instructorIndex);
+
         if (selectedStudent.getLevel().equals(SwimLevel.NEW)) {
             System.out.println("Student is not added to a class yet");
             return;
@@ -399,9 +460,7 @@ public class ProgrameDataManagement {
             } else if (selectedStudent.getMaximumAward() == 20) {
                 System.out.println("Student is in waiting list, and eligible to transfer to the next level. ");
             }
-
         } else if (selectedStudent.getLevel() == SwimLevel.IMPROVER) {
-
             if (selectedStudent.getMaximumAward() == 20) {
                 System.out.println("Novice students must first complete the 100m distance swim qualification.");
                 awardDistanceSwim(selectedInstructor, selectedStudent, 100);
@@ -415,9 +474,7 @@ public class ProgrameDataManagement {
             } else if (selectedStudent.getMaximumAward() == 400) {
                 System.out.println("Student is in waiting list, and eligible to transfer to the next level. ");
             }
-
         } else if (selectedStudent.getLevel() == SwimLevel.ADVANCED) {
-
             if (selectedStudent.getMaximumAward() == 400) {
                 System.out.println("Novice students must first complete the 800m distance swim qualification.");
                 awardDistanceSwim(selectedInstructor, selectedStudent, 800);
@@ -431,7 +488,6 @@ public class ProgrameDataManagement {
             } else if (selectedStudent.getMaximumAward() == 3000) {
                 System.out.println("Student has completed All personal survival medals ");
             }
-
             awardPersonalSurvival(selectedInstructor, selectedStudent);
         } else {
             System.out.println("Invalid student level.");
