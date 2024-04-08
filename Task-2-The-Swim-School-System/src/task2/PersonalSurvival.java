@@ -5,7 +5,7 @@ public class PersonalSurvival extends Qualification {
     private String survivalLevel;
 
     public PersonalSurvival(SwimLevel level, Instructor instructor, String survivalLevel) {
-        super(level, instructor,"PersonalSurvival");
+        super(level, instructor, "PersonalSurvival");
         this.survivalLevel = survivalLevel;
     }
 
@@ -15,10 +15,13 @@ public class PersonalSurvival extends Qualification {
     }
 
     // Override method to display qualification details
-
     @Override
     public String toString() {
-        return this.survivalLevel+": Level - " + getLevel() + " (Instructor: "+getInstructor()+" )";
+        return this.survivalLevel + ": Level - " + getLevel() + " (Instructor: " + getInstructor() + " )";
 
+    }
+
+    public void setSurvivalLevel(String l) {
+        this.survivalLevel = l;
     }
 }

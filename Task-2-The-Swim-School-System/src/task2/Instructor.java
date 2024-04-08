@@ -1,10 +1,10 @@
-
 package task2;
-
 
 import java.util.ArrayList;
 import java.util.List;
+
 class Instructor {
+
     private String name;
     private List<SwimLesson> swimLessonList;
 
@@ -31,10 +31,10 @@ class Instructor {
     }
 
     public boolean hasLessonWithLevel(SwimLevel level) {
-        for (SwimLesson lesson:this.swimLessonList)
-        {
-            if(lesson.getLevel().equals(level))
+        for (SwimLesson lesson : this.swimLessonList) {
+            if (lesson.getLevel().equals(level)) {
                 return true;
+            }
         }
 
         return false;

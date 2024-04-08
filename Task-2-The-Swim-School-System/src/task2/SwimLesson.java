@@ -4,7 +4,9 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
 public class SwimLesson {
+
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private SwimLevel level;
@@ -75,19 +77,17 @@ public class SwimLesson {
         this.instructor = instructor;
     }
 
-
     public int getAvailableSpaces() {
-        return MAX_STUDENT-this.students.size();
+        return MAX_STUDENT - this.students.size();
     }
 
     @Override
     public String toString() {
-        return
-                "Day =" + dayOfWeek +
-                ", Time=" + startTime +
-                ", level=" + level +
-                ", instructor=" + instructor +
-                ", students=" + students.size() +
-                ", duration=" + duration;
+        return "Day =" + dayOfWeek
+                + ", Time=" + startTime
+                + ", level=" + level
+                + ", instructor=" + instructor
+                + ", students=" + students.size()
+                + ", duration=" + duration;
     }
 }

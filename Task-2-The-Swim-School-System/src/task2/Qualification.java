@@ -4,8 +4,7 @@ abstract class Qualification {
 
     private SwimLevel level;
     private Instructor instructor; // Assuming each qualification is awarded by an instructor
-        private String name;
-
+    private String name;
 
     public Qualification(SwimLevel level, Instructor instructor, String name) {
         this.level = level;
@@ -22,17 +21,13 @@ abstract class Qualification {
     public Instructor getInstructor() {
         return instructor;
     }
-    
-     public String getName() {
+
+    public String getName() {
         return name;
     }
-    
-
-
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
-
 
 }

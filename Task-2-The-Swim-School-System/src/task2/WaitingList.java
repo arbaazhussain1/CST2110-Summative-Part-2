@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class WaitingList {
-   private Map<SwimLevel, List<SwimStudent>> waitingList;
+
+    private Map<SwimLevel, List<SwimStudent>> waitingList;
 
     public WaitingList() {
         waitingList = new HashMap<>();

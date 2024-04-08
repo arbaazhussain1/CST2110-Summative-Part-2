@@ -31,9 +31,9 @@ public class LessonList {
     public SwimLesson getLesson(DayOfWeek selectedDay, LocalTime selectedTime, SwimLevel selectedLevel) {
         // Iterate through the list of lessons to find the matching lesson
         for (SwimLesson lesson : lessons) {
-            if (lesson.getDayOfWeek().equals(selectedDay) &&
-                    lesson.getStartTime().equals(selectedTime) &&
-                    lesson.getLevel().equals(selectedLevel)) {
+            if (lesson.getDayOfWeek().equals(selectedDay)
+                    && lesson.getStartTime().equals(selectedTime)
+                    && lesson.getLevel().equals(selectedLevel)) {
                 return lesson;
             }
         }
@@ -42,12 +42,12 @@ public class LessonList {
 
     public List<SwimLesson> getLessonsByLevel(SwimLevel level) {
 
-        List<SwimLesson> lessonList=new ArrayList<>();
+        List<SwimLesson> lessonList = new ArrayList<>();
 
-        for (SwimLesson lesson:this.lessons)
-        {
-            if(lesson.getLevel().equals(level))
+        for (SwimLesson lesson : this.lessons) {
+            if (lesson.getLevel().equals(level)) {
                 lessonList.add(lesson);
+            }
         }
         return lessonList;
     }

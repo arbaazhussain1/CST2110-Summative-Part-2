@@ -10,6 +10,8 @@ public class SwimStudent {
     private List<Qualification> qualifications;
 
     private SwimLesson swimClass; // Reference to the associated lesson
+    private SwimQualification swimQualification;
+    private int maximumAward=0;
 
     // Constructor
     public SwimStudent(String name, SwimLevel level) {
@@ -67,5 +69,52 @@ public class SwimStudent {
                 return true;
         }
         return false;
+    }
+
+    public SwimQualification getSwimQualification() {
+        return swimQualification;
+    }
+
+    public void setSwimQualification(SwimQualification swimQualification) {
+        this.swimQualification = swimQualification;
+    }
+
+
+    public boolean isAlreadyHasQualification(Qualification qualification)
+    {
+
+        for (Qualification q:this.qualifications)
+        {
+            if(qualification instanceof DistanceSwim) {
+                DistanceSwim swim=(DistanceSwim) qualification;
+                if(q instanceof DistanceSwim)
+                {
+                    DistanceSwim ds=(DistanceSwim) q;
+                    if(ds.getName().equalsIgnoreCase(swim.getName()) && ds.getDistance()==swim.getDistance())
+                        return true;
+                }
+            }
+            else if(qualification instanceof PersonalSurvival )
+            {
+                PersonalSurvival survival=(PersonalSurvival) qualification;
+                if(q instanceof PersonalSurvival)
+                {
+                    PersonalSurvival ps=(PersonalSurvival) q;
+                    if(ps.getName().equalsIgnoreCase(survival.getName()) && ps.getSurvivalLevel().equalsIgnoreCase(survival.getSurvivalLevel()))
+                        return true;
+                }
+
+
+            }
+        }
+        return false;
+    }
+
+    public int getMaximumAward() {
+        return maximumAward;
+    }
+
+    public void setMaximumAward(int maximumAward) {
+        this.maximumAward = maximumAward;
     }
 }
