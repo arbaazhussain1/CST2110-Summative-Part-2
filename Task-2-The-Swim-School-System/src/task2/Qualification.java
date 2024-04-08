@@ -7,11 +7,10 @@ abstract class Qualification {
         private String name;
 
 
-    public Qualification(SwimLevel level, Instructor instructor) {
+    public Qualification(SwimLevel level, Instructor instructor, String name) {
         this.level = level;
         this.instructor = instructor;
-                this.name = name;
-
+        this.name = name;
     }
 
     // Getter for level
@@ -29,6 +28,11 @@ abstract class Qualification {
     }
     
 
-    // Abstract method for displaying qualification details
-    public abstract String displayDetails();
+
+
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
+    }
+
+
 }

@@ -8,8 +8,7 @@ public class SwimStudent {
     private String name;
     private SwimLevel level;
     private List<Qualification> qualifications;
-    private List<Qualification> distanceSwimQualifications;
-    private List<Qualification> personalSurvivalQualifications;
+
     private SwimLesson swimClass; // Reference to the associated lesson
 
     // Constructor
@@ -17,8 +16,7 @@ public class SwimStudent {
         this.name = name;
         this.level = level;
         this.qualifications = new ArrayList<>();
-        this.distanceSwimQualifications = new ArrayList<>();
-        this.personalSurvivalQualifications = new ArrayList<>();
+
     }
     
     // Getters and setters
@@ -60,13 +58,14 @@ public class SwimStudent {
             return ""; // No lesson associated
         }
     }
-    
-    public List<Qualification> getDistanceSwimQualifications() {
-        return distanceSwimQualifications;
-    }
 
-    public List<Qualification> getPersonalSurvivalQualifications() {
-        return personalSurvivalQualifications;
-    }
 
+    public boolean hasAchieved(Qualification qualification) {
+        for (Qualification q:this.qualifications)
+        {
+            if (q.getName().equalsIgnoreCase(qualification.getName()) && q.getLevel().equals(qualification.getLevel()) && q.getInstructor().getName().equalsIgnoreCase(qualification.getInstructor().getName()))
+                return true;
+        }
+        return false;
+    }
 }

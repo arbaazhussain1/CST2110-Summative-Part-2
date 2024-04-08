@@ -22,7 +22,7 @@ public class StudentList {
         students.remove(student);
     }
 
-    public List<SwimStudent> getAllStudents() {
+    public List<SwimStudent> getAllSwimStudents() {
         return students;
     }
 
@@ -45,15 +45,7 @@ public class StudentList {
     }
     
     // Check if a student is on the waiting list
-    public boolean isStudentOnWaitingList(String name) {
-        for (SwimStudent student : waitingList) {
-            if (student.getName().equalsIgnoreCase(name)) {
-                return true; // Student is on the waiting list
-            }
-        }
-        return false; // Student is not on the waiting list
-    }
-    
+
     public void addStudentToWaitingList(SwimStudent student) {
     waitingList.add(student);
 }
@@ -61,6 +53,18 @@ public class StudentList {
     public void removeStudentToWaitingList(SwimStudent student) {
     waitingList.remove(student);
 }
+
+    public List<SwimStudent> getStudentsByLevel(SwimLevel level) {
+        List<SwimStudent> studentList=new ArrayList<>();
+        for (SwimStudent student:students)
+        {
+            if(student.getLevel().equals(level))
+                studentList.add(student);
+
+        }
+
+        return studentList;
+    }
 
     // You can add more methods as per your requirements, such as finding a student by name, etc.
 }

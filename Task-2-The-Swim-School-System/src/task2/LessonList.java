@@ -1,5 +1,7 @@
 package task2;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,43 +28,27 @@ public class LessonList {
         return lessons;
     }
 
-    // Method to get the day of the lesson
-    public String getDay(SwimLesson lesson) {
-        return lesson.getDayOfWeek();
+    public SwimLesson getLesson(DayOfWeek selectedDay, LocalTime selectedTime, SwimLevel selectedLevel) {
+        // Iterate through the list of lessons to find the matching lesson
+        for (SwimLesson lesson : lessons) {
+            if (lesson.getDayOfWeek().equals(selectedDay) &&
+                    lesson.getStartTime().equals(selectedTime) &&
+                    lesson.getLevel().equals(selectedLevel)) {
+                return lesson;
+            }
+        }
+        return null; // Return null if no matching lesson is found
     }
 
-    // Method to get the start time of the lesson
-    public String getStartTime(SwimLesson lesson) {
-        return lesson.getStartTime();
-    }
+    public List<SwimLesson> getLessonsByLevel(SwimLevel level) {
 
-    // Method to get the instructor of the lesson
-    public Instructor getInstructor(SwimLesson lesson) {
-        return lesson.getInstructor();
-    }
+        List<SwimLesson> lessonList=new ArrayList<>();
 
-    // Method to get the students enrolled in the lesson
-    public List<SwimStudent> getStudents(SwimLesson lesson) {
-        return lesson.getStudents();
-    }
-
-//    // Method to add a student to the lesson
-//    public void addStudent(SwimLesson lesson, SwimStudent student) {
-//        lesson.addStudent(student);
-//    }
-//    // Method to add multiple students to the lesson
-//    public void addStudents(SwimLesson lesson, List<SwimStudent> students) {
-//        for (SwimStudent student : students) {
-//            lesson.addStudent(student);
-//        }
-//    }
-    public void addStudents(SwimLesson lesson, List<SwimStudent> students) {
-    lesson.addStudents(students);
-}
-
-
-    // Method to remove a student from the lesson
-    public void removeStudent(SwimLesson lesson, SwimStudent student) {
-        lesson.removeStudent(student);
+        for (SwimLesson lesson:this.lessons)
+        {
+            if(lesson.getLevel().equals(level))
+                lessonList.add(lesson);
+        }
+        return lessonList;
     }
 }

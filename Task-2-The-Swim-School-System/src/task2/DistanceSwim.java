@@ -4,7 +4,7 @@ public class DistanceSwim extends Qualification {
     private int distance;
 
     public DistanceSwim(SwimLevel level, Instructor instructor, int distance) {
-        super(level, instructor);
+        super(level, instructor,"DistanceSwim");
         this.distance = distance;
     }
 
@@ -14,8 +14,11 @@ public class DistanceSwim extends Qualification {
     }
 
     // Override method to display qualification details
+
+
     @Override
-    public String displayDetails() {
-        return "DistanceSwim: Level - " + getLevel() + ", Distance - " + distance + " meters";
+    public String toString() {
+        return "DistanceSwim: Level - " + getLevel() + ", Distance - " + distance + " meters"+" (Instructor: "+getInstructor()+" )";
+
     }
 }
