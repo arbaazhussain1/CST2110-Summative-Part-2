@@ -4,9 +4,10 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.*;
 
+// This class provides initial data setup for swim students, lessons, instructors, and qualifications
 public class InitialData {
 
-    // Create a new list to hold the swim students
+    // Create lists and maps to hold swim students, lessons, instructors, and student assignments
     public static StudentList studentList = new StudentList();
     public static LessonList lessonList = new LessonList(); // Create a lesson list instance
     public static List<Instructor> instructorList = new ArrayList<>();
@@ -16,7 +17,10 @@ public class InitialData {
     // and for a specific instructor
     private static Map<SwimStudent, Map<DayOfWeek, Map<Instructor, Integer>>> studentAssignments = new HashMap<>();
 
-    // Method to populate student data
+    /**
+     * Populates the initial data including students, lessons, instructors, and
+     * qualifications.
+     */
     // Method to populate and return student data sorted alphabetically by name
     public static void populateData() {
         populateStudentData();
@@ -39,6 +43,9 @@ public class InitialData {
 
     }
 
+    /**
+     * Populates student data including names, levels, and qualifications.
+     */
     public static void populateStudentData() {
         // Add novice level students
         String[] noviceNames = {"Emma", "Liam", "Olivia", "Noah", "Ava", "William", "Sophia", "James", "Isabella", "Benjamin"};
@@ -140,6 +147,10 @@ public class InitialData {
         }
     }
 
+    /**
+     * Populates swim lessons for different days, times, and levels, and assigns
+     * students to lessons.
+     */
     public static void populateSwimLessons() {
         List<SwimLesson> lessons = new ArrayList<>();
 
@@ -199,7 +210,10 @@ public class InitialData {
         }
     }
 
-    // Helper method to get the number of times a student is assigned to a lesson on a specific day for a specific instructor
+    /**
+     * Helper method to get the number of times a student is assigned to a
+     * lesson on a specific day for a specific instructor.
+     */
     private static int getStudentAssignments(SwimStudent student, DayOfWeek day, Instructor instructor) {
         return studentAssignments.computeIfAbsent(student, k -> new HashMap<>())
                 .getOrDefault(day, new HashMap<>())
@@ -207,7 +221,10 @@ public class InitialData {
 
     }
 
-    // Helper method to increment the number of times a student is assigned to a lesson on a specific day for a specific instructor
+    /**
+     * Helper method to increment the number of times a student is assigned to a
+     * lesson on a specific day for a specific instructor.
+     */
     private static void incrementStudentAssignments(SwimStudent student, DayOfWeek day, Instructor instructor) {
         studentAssignments.computeIfAbsent(student, k -> new HashMap<>())
                 .computeIfAbsent(day, k -> new HashMap<>())
@@ -215,6 +232,10 @@ public class InitialData {
 
     }
 
+    /**
+     * Populates swim instructors and assigns them to qualifications and
+     * lessons.
+     */
     public static void populateSwimInstructors() {
         // Define the names of the instructors
         String[] instructorNames = {"John", "Emily", "David", "Sophia", "Michael", "Emma", "James", "Olivia", "Daniel"};
@@ -238,7 +259,9 @@ public class InitialData {
         }
     }
 
-    // Helper method to assign instructors to qualifications
+    /**
+     * Helper method to assign instructors to qualifications.
+     */
     private static void assignInstructorsToQualifications() {
         // Iterate over each qualification and assign an instructor
         int index = 0;
@@ -249,6 +272,10 @@ public class InitialData {
         }
     }
 
+    /**
+     * Moves students to the waiting list based on their level and maximum
+     * award.
+     */
     public static void moveToWaitingList() {
         studentList.getWaitingList().clear();
         for (SwimStudent student : studentList.getAllSwimStudents()) {

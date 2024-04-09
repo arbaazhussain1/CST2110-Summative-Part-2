@@ -1,11 +1,14 @@
 package task2;
 
+// Abstract class for swim qualifications
 abstract class Qualification {
 
-    private SwimLevel level;
-    private Instructor instructor; // Assuming each qualification is awarded by an instructor
-    private String name;
+    // Instance variables
+    private SwimLevel level; // Level of the qualification
+    private Instructor instructor; // Instructor who awards the qualification
+    private String name;  // Name of the qualification
 
+    // Constructor
     public Qualification(SwimLevel level, Instructor instructor, String name) {
         this.level = level;
         this.instructor = instructor;
@@ -22,10 +25,12 @@ abstract class Qualification {
         return instructor;
     }
 
+    // Getter for name
     public String getName() {
         return name;
     }
 
+    // Setter for instructor
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
