@@ -122,29 +122,36 @@ public class ProgrameDataManagement {
                     }
 
                     // Display qualifications if available
+                    System.out.println("|----------------------------------------------------------|");
+                    System.out.printf("| %-18s | %-12s | %-20s |%n", "Type", "Award", "Instructor");
+                    System.out.println("|----------------------------------------------------------|");
+
                     if (!selectedStudent.getQualifications().isEmpty()) {
-                        System.out.println("\nQualifications:");
                         for (Qualification qualification : selectedStudent.getQualifications()) {
                             if (qualification instanceof DistanceSwim) {
                                 DistanceSwim distanceSwim = (DistanceSwim) qualification;
-                                System.out.printf("| - Swim Distance: %dm%n", distanceSwim.getDistance());
-
+                                System.out.printf("| %-18s | %-11dm | %-20s |%n", " Distance Swim ", distanceSwim.getDistance(), distanceSwim.getInstructor().getName());
+                            } else if (qualification instanceof PersonalSurvival) {
+                                PersonalSurvival personalSurvival = (PersonalSurvival) qualification;
+                                System.out.printf("| %-18s | %-12s | %-20s |%n", " Personal Survival", personalSurvival.getSurvivalLevel(), personalSurvival.getInstructor().getName());
                             }
                         }
                     }
-                    System.out.println("|----------------------------------------|");
+                    System.out.println("|----------------------------------------------------------|");
 
-                    // Display medal if applicable
+                    // Display medals if applicable
                     for (Qualification qualification : selectedStudent.getQualifications()) {
                         if (qualification instanceof DistanceSwim) {
                             DistanceSwim distanceSwim = (DistanceSwim) qualification;
                             if (distanceSwim.getDistance() >= 800) {
                                 if (distanceSwim.getDistance() == 800) {
-                                    System.out.println("| - Medal: Bronze");
+                                    System.out.println("| - Medal: Bronze                                          |");
                                 } else if (distanceSwim.getDistance() == 1500) {
-                                    System.out.println("| - Medal: Silver");
+                                    System.out.println("| - Medal: Silver                                          |");
                                 } else if (distanceSwim.getDistance() == 3000) {
-                                    System.out.println("| - Medal: GOLD");
+                                    System.out.println("| - Medal: Gold                                            |");
+                                    System.out.println("|----------------------------------------------------------|");
+
                                 }
                             }
 
